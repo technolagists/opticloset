@@ -15,5 +15,11 @@
   "bugs": {
     "url": "https://github.com/kchresfield/thesis/issues"
   },
-  "homepage": "https://github.com/kchresfield/thesis#readme"
+  "homepage": "https://github.com/kchresfield/thesis#readme",
+  "dependencies": {
+    "body": "^5.1.0",
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "parser": "^0.1.4"
+  }
 }
