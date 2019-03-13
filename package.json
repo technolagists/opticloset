@@ -19,7 +19,17 @@
   "dependencies": {
     "body": "^5.1.0",
     "body-parser": "^1.18.3",
+    "parser": "^0.1.4",
+    "dotenv": "^6.2.0",
     "express": "^4.16.4",
-    "parser": "^0.1.4"
+    "pg": "^7.8.2",
+    "pg-hstore": "^2.3.2",
+    "sequelize": "^4.43.0"
+  },
+  "devDependencies": {
+    "eslint": "^5.3.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.16.0",
+    "supertest": "^4.0.0"
   }
 }
