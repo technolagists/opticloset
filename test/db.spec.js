@@ -2,7 +2,7 @@ const SequelizeMock = require('sequelize-mock');
 
 const sequelize = new SequelizeMock();
 
-const dbHelpers = require('../db/dbHelpers')(sequelize, SequelizeMock);
+const dbHelpers = require('../db/dbhelpers')(sequelize, SequelizeMock);
 
 const ClothingItem = require('../db/ClothingItem')(sequelize, SequelizeMock);
 
@@ -12,55 +12,55 @@ const exampleItems = [{
   price: 50,
   url_image: 'example.com/image',
   id_color_primary: 'blue',
-  id_color_secondary: 'grey'
-  },
-  {
+  id_color_secondary: 'grey',
+},
+{
   id_user: '1',
   id_category: 'bottom',
   price: 40,
   url_image: 'example.com/image2',
   id_color_primary: 'green',
   id_color_secondary: 'yellow'
-  },
-  {id_user: '1',
+},
+{id_user: '1',
   id_category: 'outerwear',
   price: 70,
   url_image: 'example.com/image3',
   id_color_primary: 'white',
   id_color_secondary: 'grey'
-  },
-  {
+},
+{
   id_user: '1',
   id_category: 'shoes',
   price: 70,
   url_image: 'example.com/image3',
   id_color_primary: 'white',
   id_color_secondary: 'grey'
-  }]
+}];
 
 const exampleOutfits = [{
   id_user: '1',
   id_category: 'top',
   id_clothing_item: 1,
-  date_worn: 3/12/2019
+  date_worn: 3 / 12 / 2019,
 },
 {
   id_user: '1',
   id_category: 'bottom',
   id_clothing_item: 2,
-  date_worn: 3 / 12 / 2019
+  date_worn: 3 / 12 / 2019,
 },
 {
   id_user: '1',
   id_category: 'outerwear',
   id_clothing_item: 3,
-  date_worn: 3 / 12 / 2019
+  date_worn: 3 / 12 / 2019,
 },
 {
   id_user: '2',
   id_category: 'top',
   id_clothing_item: 4,
-  date_worn: 3 / 12 / 2019
+  date_worn: 3 / 12 / 2019,
 }]
 
 describe('OptiCloset', () => {
