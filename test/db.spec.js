@@ -35,7 +35,7 @@ const exampleItems = [{
   price: 70,
   url_image: 'example.com/image3',
   id_color_primary: 'white',
-  id_color_secondary: 'grey'
+  id_color_secondary: 'grey',
 }];
 
 const exampleOutfits = [{
