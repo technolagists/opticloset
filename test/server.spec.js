@@ -1,8 +1,6 @@
 const request = require('supertest');
 const server = require('../server/server');
 
-
-
 describe('homepage', () => {
   test('Should respond to the GET method', () => {
     return request(server)

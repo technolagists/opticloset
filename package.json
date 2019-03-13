@@ -4,7 +4,8 @@
   "description": "opticloset",
   "main": "index.js",
   "scripts": {
-    "test": "test"
+    "test": "jasmine",
+    "test2": "jasmine examples"
   },
   "repository": {
     "type": "git",
@@ -27,6 +28,7 @@
     "eslint": "^5.3.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.16.0",
+    "jasmine": "^3.3.1",
     "supertest": "^4.0.0"
   }
 }
