@@ -1,7 +1,10 @@
 require('dotenv').config();
+const Sequelize = require('sequelize');
 
-var sequelize = new Sequelize('database', 'username', 'password', {
-  host: 'localhost',
+// clear and rebuild database on line 232
+
+const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASS, {
+  host: process.env.DB_HOST,
   dialect: 'postgres',
 
   pool: {
@@ -12,5 +15,220 @@ var sequelize = new Sequelize('database', 'username', 'password', {
 
 });
 
-// Or you can simply use a connection uri
-var sequelize = new Sequelize(`postgres://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_HOST}:5432/${process.env.DB_NAME}`);
+// confirm that connection to remote DB has been made
+sequelize
+  .authenticate()
+  .then(() => {
+    console.log('Connection has been established successfully.');
+  })
+  .catch(err => {
+    console.error('Unable to connect to the database:', err);
+  })
+  .done();
+
+const User = sequelize.define('user', {
+  id_user: {
+    type: Sequelize.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+  },
+  username: {
+    type: Sequelize.STRING,
+  },
+  location: {
+    type: Sequelize.STRING,
+  },
+})
+
+const Category = sequelize.define('category', {
+  id_category: {
+    type: Sequelize.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+  },
+  type: {
+    type: Sequelize.STRING,
+  },
+})
+
+const Img = sequelize.define('img', {
+  id_img: {
+    type: Sequelize.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+  },
+  type: {
+    type: Sequelize.STRING,
+  },
+})
+
+const Clothing_item = sequelize.define('clothing_item', {
+  id_clothing_item: {
+    type: Sequelize.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+  },
+  id_user: {
+    type: Sequelize.INTEGER,
+    // creating foreign key 
+    references: {
+      // This is a reference to another model
+      model: User,
+      // This is the column name of the referenced model
+      key: 'id_user',
+      // This declares when to check the foreign key constraint. PostgreSQL only.
+      deferrable: Sequelize.Deferrable.INITIALLY_IMMEDIATE,
+    }
+  },
+  id_category: {
+    type: Sequelize.INTEGER,
+    references: {
+      model: Category,
+      key: 'id_category',
+      deferrable: Sequelize.Deferrable.INITIALLY_IMMEDIATE,
+    }
+  },
+  price: {
+    type: Sequelize.INTEGER,
+  },
+  id_image: {
+    type: Sequelize.INTEGER,
+    references: {
+      model: Img,
+      key: 'id_img',
+      deferrable: Sequelize.Deferrable.INITIALLY_IMMEDIATE,
+    }
+  },
+  count_word: {
+    type: Sequelize.INTEGER,
+  },
+  createdAt: Sequelize.DATE,
+  updatedAt: Sequelize.DATE,
+})
+
+const Occasion = sequelize.define('occasion', {
+  id_occasion: {
+    type: Sequelize.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+  },
+  type: {
+    type: Sequelize.STRING,
+  },
+})
+
+const Attribute = sequelize.define('attribute', {
+  id_attribute: {
+    type: Sequelize.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+  },
+  type: {
+    type: Sequelize.STRING,
+  },
+})
+
+const Color = sequelize.define('color', {
+  id_color: {
+    type: Sequelize.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+  },
+  type: {
+    type: Sequelize.STRING,
+  },
+})
+
+const Clothing_occasion = sequelize.define('clothing_occasion', {
+  id_clothing_occasion: {
+    type: Sequelize.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+  },
+  id_clothing_item: {
+    type: Sequelize.INTEGER,
+    references: {
+      model: Clothing_item,
+      key: 'id_clothing_item',
+      deferrable: Sequelize.Deferrable.INITIALLY_IMMEDIATE,
+    }
+  },
+  id_occasion: {
+    type: Sequelize.INTEGER,
+    references: {
+      model: Occasion,
+      key: 'id_occasion',
+      deferrable: Sequelize.Deferrable.INITIALLY_IMMEDIATE,
+    }
+  }
+  
+})
+
+Clothing_occasion.belongsTo(Clothing_item);
+Clothing_occasion.belongsTo(Occasion);
+Clothing_item.belongsToMany(Occasion, { through: Clothing_occasion });
+Occasion.belongsToMany(Clothing_item, { through: Clothing_occasion });
+
+const Clothing_attribute = sequelize.define('clothing_attribute', {
+  id_clothing_attribute: {
+    type: Sequelize.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+  },
+  id_clothing_item: {
+    type: Sequelize.INTEGER,
+		references: {
+      model: Clothing_item,
+      key: 'id_clothing_item',
+      deferrable: Sequelize.Deferrable.INITIALLY_IMMEDIATE,
+    }
+  },
+  id_attribute: {
+    type: Sequelize.INTEGER,
+		references: {
+      model: Attribute,
+      key: 'id_attribute',
+      deferrable: Sequelize.Deferrable.INITIALLY_IMMEDIATE,
+    }
+  }
+})
+
+Clothing_attribute.belongsTo(Clothing_item);
+Clothing_attribute.belongsTo(Attribute);
+Clothing_item.belongsToMany(Attribute, { through: Clothing_attribute });
+Attribute.belongsToMany(Clothing_item, { through: Clothing_attribute });
+
+
+const Clothing_color = sequelize.define('clothing_color', {
+  id_clothing_color: {
+    type: Sequelize.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+  },
+  id_clothing_item: {
+    type: Sequelize.INTEGER,
+		  reference: {
+      model: Clothing_item,
+      key: 'id_clothing_item',
+      deferrable: Sequelize.Deferrable.INITIALLY_IMMEDIATE,
+    }
+  },
+  id_color: {
+    type: Sequelize.INTEGER,
+		reference: {
+      model: Color,
+      key: 'id_color',
+      deferrable: Sequelize.Deferrable.INITIALLY_IMMEDIATE,
+    }
+  }
+})
+
+Clothing_color.belongsTo(Clothing_item);
+Clothing_color.belongsTo(Color);
+Clothing_item.belongsToMany(Color, { through: Clothing_color });
+Color.belongsToMany(Clothing_item, { through: Clothing_color });
+
+
+
+// Clears and rebuilds the database
+// sequelize.sync({ force: true });
