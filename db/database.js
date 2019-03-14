@@ -1,7 +1,7 @@
 require('dotenv').config();
 const Sequelize = require('sequelize');
 
-// clear and rebuild database on line 232
+// to clear and rebuild database uncomment on line 231
 
 const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASS, {
   host: process.env.DB_HOST,
@@ -229,3 +229,7 @@ Color.belongsToMany(Clothing_item, { through: Clothing_color });
 
 // Clears and rebuilds the database
 // sequelize.sync({ force: true });
+
+module.exports = {
+  User,
+};
