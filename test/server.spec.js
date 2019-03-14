@@ -4,16 +4,9 @@ const server = require('../server/server');
 describe('homepage', () => {
   test('Should respond to the GET method', () => {
     return request(server)
-      .get('/')
+      .get(HOST)
       .then(response, () => {
         expect(response.statusCode).toBe(200);
-      });
-  });
-  test('Should return a list of all clothing items for a user in JSON format', () => {
-    return request(server)
-      .get('/allItems/:userId')
-      .then(response, () => {
-        expect(response.type).toBe(/json/);
       });
   });
 });
