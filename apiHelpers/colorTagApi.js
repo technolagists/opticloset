@@ -1,34 +1,61 @@
-var fs = require("fs");
-var request = require("request");
+const fs = require('fs');
 
-var options = {
+const axios = require('axios');
+const FormData = require('form-data');
+// const data = new FormData();
+
+// data.append("action", "ADD");
+// data.append("param", 0);
+// data.append("secondParam", 0);
+// data.append("file", new Blob(["test payload"], { type: "text/csv" }));
+
+// axios.post("http://httpbin.org/post", data);
+
+// const file = new Blob([files[0]], { type: 'image/jpg' });// WORKS much better (if you know what MIME type you want.
+
+const formData = new FormData();
+formData.append('image', fs.createReadStream('./apiHelpers/images/fullsizeoutput_1ab2.jpeg'));
+// axios.post('https://apicloud-colortag.p.rapidapi.com/tag-file.json', formData, {})
+//   .then((result) => {
+//     console.log(result);
+//   })
+//   .catch((err) => {
+//     console.log(err);
+//   });
+
+  
+const options = {
   method: 'POST',
   url: 'https://apicloud-colortag.p.rapidapi.com/tag-file.json',
-  headers:
-  {
-    'Postman-Token': 'd8c2eaa9-dd75-4807-b796-d1911e7ea8b4',
-    'cache-control': 'no-cache',
+  headers: {
     'Content-Type': 'application/x-www-form-urlencoded',
     'X-RapidAPI-Key': 'f90e2a60damsh00f3575444e4362p13c5acjsn6a6363fc5a78',
-    'content-type': 'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW'
+    'content-type':
+      'multipart/form-data',
   },
-  formData:
-  {
-    image:
-    {
-      value: 'fs.createReadStream("C:\\Users\\Julien de la Mettrie\\Documents\\dev\\images\\fullsizeoutput_1ab2.jpeg")',
-      options:
-      {
-        filename: 'C:\\Users\\Julien de la Mettrie\\Documents\\dev\\images\\fullsizeoutput_1ab2.jpeg',
-        contentType: null
-      }
-    },
-    size: 'original'
-  }
+  data: formData,
 };
 
-request(options, function (error, response, body) {
-  if (error) throw new Error(error);
+const detectColors = (callback) => {
+  return axios(options)
+    .then(function (response) {
+      //handle success
+      console.log(response);
+    })
+    .catch(function (response) {
+      //handle error
+      console.log(response);
+    });
 
-  console.log(body);
-});
+
+
+    // .then((results) => {
+    //   console.log(results);
+    // })
+    // .catch((err) => {
+    //   console.log(err);
+    //   return callback(err, null);
+    // });
+};
+
+detectColors(() => { console.log('got an error'); });
