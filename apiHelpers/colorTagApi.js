@@ -1,34 +1,26 @@
-var fs = require("fs");
-var request = require("request");
+require('dotenv').config();
+const fs = require('fs');
 
-var options = {
-  method: 'POST',
-  url: 'https://apicloud-colortag.p.rapidapi.com/tag-file.json',
-  headers:
-  {
-    'Postman-Token': 'd8c2eaa9-dd75-4807-b796-d1911e7ea8b4',
-    'cache-control': 'no-cache',
-    'Content-Type': 'application/x-www-form-urlencoded',
-    'X-RapidAPI-Key': 'f90e2a60damsh00f3575444e4362p13c5acjsn6a6363fc5a78',
-    'content-type': 'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW'
-  },
-  formData:
-  {
-    image:
-    {
-      value: 'fs.createReadStream("C:\\Users\\Julien de la Mettrie\\Documents\\dev\\images\\fullsizeoutput_1ab2.jpeg")',
-      options:
-      {
-        filename: 'C:\\Users\\Julien de la Mettrie\\Documents\\dev\\images\\fullsizeoutput_1ab2.jpeg',
-        contentType: null
-      }
+const axios = require('axios');
+const FormData = require('form-data');
+
+const formData = new FormData();
+formData.append('image', fs.createReadStream('./apiHelpers/images/IMG_4194.jpg'));
+
+
+const detectColors = (callback) => {
+  return axios.post('https://apicloud-colortag.p.rapidapi.com/tag-file.json', formData, {
+    headers: {
+      ...formData.getHeaders(),
+      'X-RapidAPI-Key': process.env.COLORTAG_API_KEY,
     },
-    size: 'original'
-  }
+  })
+    .then((response) => {
+      callback(null, response.data.tags);
+    })
+    .catch((error) => {
+      callback(error, null);
+    });
 };
 
-request(options, function (error, response, body) {
-  if (error) throw new Error(error);
-
-  console.log(body);
-});
+module.exports.detectColors = detectColors;
