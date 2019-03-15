@@ -18,8 +18,8 @@ const detectColors = (callback) => {
     .then((response) => {
       callback(null, response.data.tags);
     })
-    .catch((response) => {
-      console.log(response);
+    .catch((error) => {
+      callback(error, null);
     });
 };
 
