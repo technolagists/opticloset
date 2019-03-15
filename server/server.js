@@ -36,7 +36,7 @@ app.post('/users', (req, res) => {
 
 // recieves picture from the client
 app.post('/clothingImage', (req, res) => {
-  console.log(req.body);
+  console.log(req);
   console.log('we got something');
   res.sendStatus(200);
 });
