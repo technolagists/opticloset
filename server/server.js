@@ -4,6 +4,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const db = require('../db/database.js');
 const sampleData = require('../sampleData.js');
+const openWeatherApi = require('../apiHelpers/openWeatherApi');
 
 const PORT = 8080;
 
@@ -11,10 +12,25 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
+// GET REQUESTS
+
 app.get('/', (req, res) => {
-  console.log('it works!');
   res.send('hello world!');
 });
+
+// Client requesting the weather conditions with a GET request at '/weather' endpoint
+app.get('/weather', (req, res) => {
+  openWeatherApi.getWeather((err, result) => {
+    if (err) {
+      res.status(500).send('Something went wrong!');
+    } else {
+      res.status(200).send(result);
+    }
+  });
+});
+
+
+// POST REQUESTS
 
 // create new user
 app.post('/users', (req, res) => {
