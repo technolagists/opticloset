@@ -1,21 +1,5 @@
+require('dotenv').config();
 const axios = require('axios');
-
-// This one should work but doesn't
-// const removeBackground = (callback) => {
-//   return axios.post('https://api.malabi.co/v1/images', {
-//     image_url: 'https://menstyleup.com/wp-content/uploads/2019/01/14745-ce807a.jpeg',
-//     callback_url: 'https://www.test.com/test',
-//     settings: {
-//       shadow: 'drop',
-//       background: 'white',
-//     },
-//   }, {
-//       headers: {
-//         'x-api-key': 'zAffE5W2i01w0RdgMVIhMa3ok9slTz1j39GzvRaS',
-//         'x-api-id': 'ltgf9tbc68',
-//       },
-//     });
-// };
 
 // This one does work
 const removeBackground = (callback) => {
@@ -23,11 +7,12 @@ const removeBackground = (callback) => {
     method: 'post',
     url: 'https://api.malabi.co/v1/images',
     headers: {
-      'x-api-key': 'zAffE5W2i01w0RdgMVIhMa3ok9slTz1j39GzvRaS',
-      'x-api-id': 'ltgf9tbc68',
+      'x-api-key': process.env.MALABI_API_KEY,
+      'x-api-id': process.env.MALABI_API_ID,
     },
     data: {
-      image_url: 'https://menstyleup.com/wp-content/uploads/2019/01/14745-ce807a.jpeg',
+      image_url:
+        'https://menstyleup.com/wp-content/uploads/2019/01/14745-ce807a.jpeg',
       callback_url: 'https://www.test.com/test',
       settings: {
         shadow: 'drop',
@@ -35,13 +20,15 @@ const removeBackground = (callback) => {
       },
     },
   })
-    .then((results) => {
-      // console.log(results);
-      return callback(results);
+    .then((response) => {
+      const result = {
+        image_url: response.data.image.result_image_url,
+      };
+      callback(null, result);
     })
     .catch((err) => {
       // console.log(err);
-      return callback(err, null);
+      callback(err, null);
     });
 };
 

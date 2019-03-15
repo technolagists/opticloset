@@ -1,3 +1,4 @@
+require('dotenv').config();
 const fs = require('fs');
 
 const axios = require('axios');
@@ -11,11 +12,11 @@ const detectColors = (callback) => {
   return axios.post('https://apicloud-colortag.p.rapidapi.com/tag-file.json', formData, {
     headers: {
       ...formData.getHeaders(),
-      'X-RapidAPI-Key': 'f90e2a60damsh00f3575444e4362p13c5acjsn6a6363fc5a78',
+      'X-RapidAPI-Key': process.env.COLORTAG_API_KEY,
     },
   })
     .then((response) => {
-      console.log(response);
+      callback(null, response.data.tags);
     })
     .catch((response) => {
       console.log(response);
@@ -23,4 +24,4 @@ const detectColors = (callback) => {
 };
 
 
-detectColors(() => { console.log('got an error'); });
+// detectColors(() => { console.log('got an error'); });

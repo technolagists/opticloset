@@ -1,4 +1,4 @@
-require("dotenv").config();
+require('dotenv').config();
 const axios = require('axios');
 
 const getWeather = (callback) => {
@@ -11,12 +11,12 @@ const getWeather = (callback) => {
         temp: response.data.list[1].main.temp,
         weather: response.data.list[1].weather[0].description,
       };
-      callback(null, result);
       console.log(response);
+      return callback(null, result);
     })
     .catch((error) => {
       console.log(error);
-      callback(error);
+      return callback(error, null);
     });
 };
 
