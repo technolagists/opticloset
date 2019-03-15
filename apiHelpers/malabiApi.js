@@ -27,10 +27,8 @@ const removeBackground = (callback) => {
       callback(null, result);
     })
     .catch((err) => {
-      // console.log(err);
       callback(err, null);
     });
 };
 
-// removeBackground(() => console.log('success'));
 module.exports.removeBackground = removeBackground;

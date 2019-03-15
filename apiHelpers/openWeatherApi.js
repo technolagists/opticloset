@@ -20,6 +20,8 @@ const getWeather = (callback) => {
     });
 };
 
-getWeather(() => {
-  console.log('got an error');
-});
+// getWeather(() => {
+//   console.log('got an error');
+// });
+
+module.exports.getWeather = getWeather;

@@ -25,3 +25,5 @@ const detectItemCategory = (url, callback) => {
 // detectItemCategory(testUrl, (err, res) => {
 //   console.log(err, res);
 // });
+
+module.exports.detectItemCategory = detectItemCategory;

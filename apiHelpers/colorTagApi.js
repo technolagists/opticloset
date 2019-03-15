@@ -23,5 +23,4 @@ const detectColors = (callback) => {
     });
 };
 
-
-// detectColors(() => { console.log('got an error'); });
+module.exports.detectColors = detectColors;
