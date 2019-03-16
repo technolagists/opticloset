@@ -65,18 +65,28 @@ app.get('/closet/:userId', (req, res) => {
 });
 
 // add clothing_item to user's closet
-// still working on, not yet functional
 app.post('/closet/:userId', (req, res) => {
   // console.log(req.params.userId);
   const { userId } = req.params;
-  const { id_user, id_category, price, id_image, count_word }
-  dbhelper.getClosetByUser(userId, (error, closet) => {
-    if (error) {
-      console.log(error);
+  const {
+    id_category, price, id_image, count_word 
+  } = req.body;
+  db.Clothing_Item.findOrCreate({
+    where: {
+      id_user: userId,
+      id_category,
+      price,
+      id_image,
+      count_word,
+    },
+  })
+    .then((result) => {
+      res.send(`Successful posting of: ${JSON.stringify(result[0].dataValues)}`);
+    }).catch((err) => {
+    // log error and send status response to client
+      console.error(err);
       res.sendStatus(500);
-    }
-    res.send(closet);
-  });
+    });
 });
 
 // add new occasion
@@ -167,6 +177,7 @@ app.post('/imgs', (req, res) => {
     console.error(err);
     res.sendStatus(500);
   });
+});
 
 // recieves picture from the client
 app.post('/clothingImage', (req, res) => {

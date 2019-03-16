@@ -4,7 +4,7 @@ module.exports.getClosetByUser = (userId, callback) => {
   console.log(userId);
   db.Clothing_Item.findAll({
     where: {
-      userId,
+      id_user: userId,
     },
   }).then((result) => {
     callback(null, result);
