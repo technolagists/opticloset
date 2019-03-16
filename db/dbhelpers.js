@@ -5,10 +5,34 @@ module.exports.getClosetByUser = (userId, callback) => {
     where: {
       id_user: userId,
     },
-  }).then((result) => {
-    callback(null, result);
-  }).catch((err) => {
-    callback(err);
+  }).then((clothes) => {
+    const catImagePromises = clothes.map((clothingItem) => {
+      return db.Category.findOne({
+        where: {
+          id_category: clothingItem.id_category,
+        },
+      })
+        .then((category) => {
+          return db.Img.findOne({
+            where: {
+              id_img: clothingItem.id_image,
+            },
+          })
+            .then((image) => {
+              const retClothingItem = Object.assign(clothingItem);
+              retClothingItem.dataValues.imageUrl = image.img_url_fullsize_clean;
+              retClothingItem.dataValues.category = category.type;
+              return retClothingItem;
+            });
+        });
+    });
+    Promise.all(catImagePromises)
+      .then((newClothes) => {
+        callback(null, newClothes);
+      })
+      .catch((err) => {
+        callback(err);
+      });
   });
 };
 
