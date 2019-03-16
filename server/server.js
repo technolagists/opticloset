@@ -4,8 +4,9 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const db = require('../db/database.js');
 const dbhelper = require('../db/dbhelpers.js');
+const sampleData = require('../sampleData.js');
 
-const PORT = process.env.PORT || 8080;
+const PORT = 8080;
 
 const app = express();
 app.use(bodyParser.json());
@@ -150,6 +151,12 @@ app.post('/imgs', (req, res) => {
     console.error(err);
     res.sendStatus(500);
   });
+
+// recieves picture from the client
+app.post('/clothingImage', (req, res) => {
+  console.log(req.body);
+  console.log('we got something');
+  res.sendStatus(200);
 });
 
 app.listen(PORT, () => {
