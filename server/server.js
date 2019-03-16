@@ -23,7 +23,7 @@ app.get('/', (req, res) => {
 // testing endpoint for db helper
 app.get('/test', (req, res) => {
   const { info } = req.body;
-  dbhelper.getOccasionById(info, (err, result) => {
+  dbhelper.updateClothingAsWorn(info, (err, result) => {
     if (err) {
       res.status(500).send('Something went wrong!');
     } else {
@@ -104,17 +104,17 @@ app.post('/closet/:userId', (req, res) => {
 
 // clothing_item in user's closet as worn
 // not yet functional, still working on it
-// app.post('/closet/:userId/worn', (req, res) => {
-//   // const { userId } = req.params;
-//   const { clothingId } = req.body;
-//   dbhelper.updateClothingAsWorn(clothingId, (error, result) => {
-//     if (error) {
-//       console.log(error);
-//       res.sendStatus(500);
-//     }
-//     res.send(result);
-//   });
-// });
+app.post('/closet/:userId/worn', (req, res) => {
+  // const { userId } = req.params;
+  const { clothingId } = req.body;
+  dbhelper.updateClothingAsWorn(clothingId, (error, result) => {
+    if (error) {
+      console.log(error);
+      res.sendStatus(500);
+    }
+    res.send(result);
+  });
+});
 
 
 // add new occasion

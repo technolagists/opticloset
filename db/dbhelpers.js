@@ -12,6 +12,25 @@ module.exports.getClosetByUser = (userId, callback) => {
   });
 };
 
+module.exports.updateClothingAsWorn = (clothingId, callback) => {
+  // console.log(clothingId);
+  db.Clothing_Item.findOne({
+    where: {
+      id_clothing_item: clothingId,
+    },
+  }).then((option) => {
+    return option.increment('count_word'); // assumes `option` always exists
+  }).then((option) => {
+    return option.reload();
+  }).then((option) => {
+    callback(null, option);
+  })
+    .catch((err) => {
+      callback(err);
+    });
+};
+
+// get info by ID helpers below
 module.exports.getColorById = (colorId, callback) => {
   db.Color.findAll({
     where: {
