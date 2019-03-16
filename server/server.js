@@ -103,16 +103,15 @@ app.post('/closet/:userId', (req, res) => {
 });
 
 // clothing_item in user's closet as worn
-// not yet functional, still working on it
 app.post('/closet/:userId/worn', (req, res) => {
   // const { userId } = req.params;
   const { clothingId } = req.body;
-  dbhelper.updateClothingAsWorn(clothingId, (error, result) => {
-    if (error) {
-      console.log(error);
-      res.sendStatus(500);
-    }
+  dbhelper.updateClothingAsWorn(clothingId).then((result) => {
+    // returns to client record with updated worn count
     res.send(result);
+  }).catch((err) => {
+    console.log(error);
+    res.sendStatus(500);
   });
 });
 

@@ -38,7 +38,7 @@ module.exports.getClosetByUser = (userId, callback) => {
 
 module.exports.updateClothingAsWorn = (clothingId, callback) => {
   // console.log(clothingId);
-  db.Clothing_Item.findOne({
+  return db.Clothing_Item.findOne({
     where: {
       id_clothing_item: clothingId,
     },
@@ -47,10 +47,10 @@ module.exports.updateClothingAsWorn = (clothingId, callback) => {
   }).then((option) => {
     return option.reload();
   }).then((option) => {
-    callback(null, option);
+    return option;
   })
     .catch((err) => {
-      callback(err);
+      console.log(err);
     });
 };
 
