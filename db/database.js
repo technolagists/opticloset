@@ -108,8 +108,6 @@ const Clothing_Item = sequelize.define('clothing_item', {
   count_word: {
     type: Sequelize.INTEGER,
   },
-  createdAt: Sequelize.DATE,
-  updatedAt: Sequelize.DATE,
 });
 
 const Occasion = sequelize.define('occasion', {
