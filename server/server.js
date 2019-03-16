@@ -15,8 +15,21 @@ app.use(cors());
 
 // GET REQUESTS
 
+// default response
 app.get('/', (req, res) => {
   res.send('hello world!');
+});
+
+// testing endpoint for db helper
+app.get('/test', (req, res) => {
+  const { info } = req.body;
+  dbhelper.getOccasionById(info, (err, result) => {
+    if (err) {
+      res.status(500).send('Something went wrong!');
+    } else {
+      res.status(200).send(result);
+    }
+  });
 });
 
 // Client requesting the weather conditions with a GET request at '/weather' endpoint
