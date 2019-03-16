@@ -57,12 +57,18 @@ const Img = sequelize.define('img', {
     primaryKey: true,
     autoIncrement: true,
   },
-  type: {
+  img_url_fullsize_clean: {
+    type: Sequelize.STRING,
+  },
+  img_url_fullsize_og: {
+    type: Sequelize.STRING,
+  },
+  img_url_thumbnail: {
     type: Sequelize.STRING,
   },
 });
 
-const Clothing_item = sequelize.define('clothing_item', {
+const Clothing_Item = sequelize.define('clothing_item', {
   id_clothing_item: {
     type: Sequelize.INTEGER,
     primaryKey: true,
@@ -102,8 +108,6 @@ const Clothing_item = sequelize.define('clothing_item', {
   count_word: {
     type: Sequelize.INTEGER,
   },
-  createdAt: Sequelize.DATE,
-  updatedAt: Sequelize.DATE,
 });
 
 const Occasion = sequelize.define('occasion', {
@@ -139,7 +143,7 @@ const Color = sequelize.define('color', {
   },
 });
 
-const Clothing_occasion = sequelize.define('clothing_occasion', {
+const Clothing_Occasion = sequelize.define('clothing_occasion', {
   id_clothing_occasion: {
     type: Sequelize.INTEGER,
     primaryKey: true,
@@ -148,7 +152,7 @@ const Clothing_occasion = sequelize.define('clothing_occasion', {
   id_clothing_item: {
     type: Sequelize.INTEGER,
     references: {
-      model: Clothing_item,
+      model: Clothing_Item,
       key: 'id_clothing_item',
       deferrable: Sequelize.Deferrable.INITIALLY_IMMEDIATE,
     },
@@ -163,12 +167,12 @@ const Clothing_occasion = sequelize.define('clothing_occasion', {
   },
 });
 
-Clothing_occasion.belongsTo(Clothing_item);
-Clothing_occasion.belongsTo(Occasion);
-Clothing_item.belongsToMany(Occasion, { through: Clothing_occasion });
-Occasion.belongsToMany(Clothing_item, { through: Clothing_occasion });
+Clothing_Occasion.belongsTo(Clothing_Item);
+Clothing_Occasion.belongsTo(Occasion);
+Clothing_Item.belongsToMany(Occasion, { through: Clothing_Occasion });
+Occasion.belongsToMany(Clothing_Item, { through: Clothing_Occasion });
 
-const Clothing_attribute = sequelize.define('clothing_attribute', {
+const Clothing_Attribute = sequelize.define('clothing_attribute', {
   id_clothing_attribute: {
     type: Sequelize.INTEGER,
     primaryKey: true,
@@ -177,7 +181,7 @@ const Clothing_attribute = sequelize.define('clothing_attribute', {
   id_clothing_item: {
     type: Sequelize.INTEGER,
     references: {
-      model: Clothing_item,
+      model: Clothing_Item,
       key: 'id_clothing_item',
       deferrable: Sequelize.Deferrable.INITIALLY_IMMEDIATE,
     },
@@ -192,13 +196,13 @@ const Clothing_attribute = sequelize.define('clothing_attribute', {
   },
 });
 
-Clothing_attribute.belongsTo(Clothing_item);
-Clothing_attribute.belongsTo(Attribute);
-Clothing_item.belongsToMany(Attribute, { through: Clothing_attribute });
-Attribute.belongsToMany(Clothing_item, { through: Clothing_attribute });
+Clothing_Attribute.belongsTo(Clothing_Item);
+Clothing_Attribute.belongsTo(Attribute);
+Clothing_Item.belongsToMany(Attribute, { through: Clothing_Attribute });
+Attribute.belongsToMany(Clothing_Item, { through: Clothing_Attribute });
 
 
-const Clothing_color = sequelize.define('clothing_color', {
+const Clothing_Color = sequelize.define('clothing_color', {
   id_clothing_color: {
     type: Sequelize.INTEGER,
     primaryKey: true,
@@ -207,7 +211,7 @@ const Clothing_color = sequelize.define('clothing_color', {
   id_clothing_item: {
     type: Sequelize.INTEGER,
     reference: {
-      model: Clothing_item,
+      model: Clothing_Item,
       key: 'id_clothing_item',
       deferrable: Sequelize.Deferrable.INITIALLY_IMMEDIATE,
     },
@@ -222,14 +226,23 @@ const Clothing_color = sequelize.define('clothing_color', {
   },
 });
 
-Clothing_color.belongsTo(Clothing_item);
-Clothing_color.belongsTo(Color);
-Clothing_item.belongsToMany(Color, { through: Clothing_color });
-Color.belongsToMany(Clothing_item, { through: Clothing_color });
+Clothing_Color.belongsTo(Clothing_Item);
+Clothing_Color.belongsTo(Color);
+Clothing_Item.belongsToMany(Color, { through: Clothing_Color });
+Color.belongsToMany(Clothing_Item, { through: Clothing_Color });
 
 // Clears and rebuilds the database
 // sequelize.sync({ force: true });
 
 module.exports = {
   User,
+  Category,
+  Img,
+  Clothing_Item,
+  Occasion,
+  Attribute,
+  Color,
+  Clothing_Occasion,
+  Clothing_Attribute,
+  Clothing_Color,
 };
