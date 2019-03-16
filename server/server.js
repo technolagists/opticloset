@@ -15,8 +15,21 @@ app.use(cors());
 
 // GET REQUESTS
 
+// default response
 app.get('/', (req, res) => {
   res.send('hello world!');
+});
+
+// testing endpoint for db helper
+app.get('/test', (req, res) => {
+  const { info } = req.body;
+  dbhelper.updateClothingAsWorn(info, (err, result) => {
+    if (err) {
+      res.status(500).send('Something went wrong!');
+    } else {
+      res.status(200).send(result);
+    }
+  });
 });
 
 // Client requesting the weather conditions with a GET request at '/weather' endpoint
@@ -43,7 +56,7 @@ app.post('/users', (req, res) => {
     location,
   }).then((result) => {
     // send confirmation to client that user was added successfully
-    res.send(`Successful posting of: ${JSON.stringify(result.dataValues)}`);
+    res.send(`${JSON.stringify(result.dataValues)}`);
   }).catch((err) => {
     // log error and send status response to client
     console.error(err);
@@ -89,6 +102,20 @@ app.post('/closet/:userId', (req, res) => {
     });
 });
 
+// clothing_item in user's closet as worn
+app.post('/closet/:userId/worn', (req, res) => {
+  // const { userId } = req.params;
+  const { clothingId } = req.body;
+  dbhelper.updateClothingAsWorn(clothingId).then((result) => {
+    // returns to client record with updated worn count
+    res.send(result);
+  }).catch((err) => {
+    console.log(error);
+    res.sendStatus(500);
+  });
+});
+
+
 // add new occasion
 app.post('/occasions', (req, res) => {
   // get occasion from req.body
@@ -99,7 +126,7 @@ app.post('/occasions', (req, res) => {
   })
     .then((result) => {
     // send confirmation to client that occasion was added or found successfully
-      res.send(`Successful posting of: ${JSON.stringify(result[0].dataValues)}`);
+      res.send(`${JSON.stringify(result[0].dataValues)}`);
     }).catch((err) => {
     // log error and send status response to client
       console.error(err);
@@ -116,7 +143,7 @@ app.post('/attributes', (req, res) => {
     where: { type },
   }).then((result) => {
     // send confirmation to client that attribute was added/found successfully
-    res.send(`Successful posting of: ${JSON.stringify(result[0].dataValues)}`);
+    res.send(`${JSON.stringify(result[0].dataValues)}`);
   }).catch((err) => {
     // log error and send status response to client
     console.error(err);
@@ -133,7 +160,7 @@ app.post('/colors', (req, res) => {
     where: { type },
   }).then((result) => {
     // send confirmation to client that color was added/found successfully
-    res.send(`Successful posting of: ${JSON.stringify(result[0].dataValues)}`);
+    res.send(`${JSON.stringify(result[0].dataValues)}`);
   }).catch((err) => {
     // log error and send status response to client
     console.error(err);
@@ -150,7 +177,7 @@ app.post('/categories', (req, res) => {
     where: { type },
   }).then((result) => {
     // send confirmation to client that category was added/found successfully
-    res.send(`Successful posting of: ${JSON.stringify(result[0].dataValues)}`);
+    res.send(`${JSON.stringify(result[0].dataValues)}`);
   }).catch((err) => {
     // log error and send status response to client
     console.error(err);
@@ -171,7 +198,7 @@ app.post('/imgs', (req, res) => {
     },
   }).then((result) => {
     // send confirmation to client that img was added/found successfully
-    res.send(`Successful posting of: ${JSON.stringify(result[0].dataValues)}`);
+    res.send(`${JSON.stringify(result[0].dataValues)}`);
   }).catch((err) => {
     // log error and send status response to client
     console.error(err);
