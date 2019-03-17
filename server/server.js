@@ -75,7 +75,7 @@ app.post('/closet/:userId', (req, res) => {
   // console.log(req.params.userId);
   const { userId } = req.params;
   const {
-    id_category, price, id_image, count_word 
+    id_category, price, id_image, count_worn 
   } = req.body;
   db.Clothing_Item.findOrCreate({
     where: {
@@ -83,7 +83,7 @@ app.post('/closet/:userId', (req, res) => {
       id_category,
       price,
       id_image,
-      count_word,
+      count_worn,
     },
   })
     .then((result) => {
