@@ -36,7 +36,7 @@ module.exports.getClosetByUser = (userId, callback) => {
   });
 };
 
-module.exports.updateClothingAsWorn = (clothingId, callback) => {
+module.exports.updateClothingAsWorn = (clothingId) => {
   // console.log(clothingId);
   return db.Clothing_Item.findOne({
     where: {
@@ -49,6 +49,19 @@ module.exports.updateClothingAsWorn = (clothingId, callback) => {
   }).then((option) => {
     return option;
   })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+module.exports.deleteItem = (clothingId) => {
+  // console.log(clothingId);
+  return db.Clothing_Item.destroy({
+    where: {
+      id_clothing_item: clothingId,
+    },
+  })
+    .then(data => data)
     .catch((err) => {
       console.log(err);
     });

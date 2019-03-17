@@ -109,8 +109,21 @@ app.post('/closet/:userId/worn', (req, res) => {
   dbhelper.updateClothingAsWorn(clothingId).then((result) => {
     // returns to client record with updated worn count
     res.send(result);
-  }).catch((err) => {
+  }).catch((error) => {
     console.log(error);
+    res.sendStatus(500);
+  });
+});
+
+// remove clothing_item from user's closet
+app.post('/closet/remove', (req, res) => {
+  // const { clothingId } = req.params;
+  const { clothingItemId } = req.body;
+  dbhelper.deleteItem(clothingItemId).then((result) => {
+    // returns to client record deleted
+    res.send(result);
+  }).catch((err) => {
+    console.log(err);
     res.sendStatus(500);
   });
 });
