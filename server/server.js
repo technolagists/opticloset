@@ -200,9 +200,9 @@ app.post('/imgs', (req, res) => {
 });
 
 // recieves picture from the client
-app.post('/clothingImage', (req, res) => {
-  console.log(req);
-  console.log('we got something');
+app.post('/clothingImage/:UserId', (req, res) => {
+  // console.log(req.body.response.url, 'cloudinary response!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+  const url = req.body.response.url;
   res.sendStatus(200);
 });
 
