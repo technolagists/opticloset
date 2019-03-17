@@ -75,7 +75,7 @@ app.post('/closet/:userId', (req, res) => {
   // console.log(req.params.userId);
   const { userId } = req.params;
   const {
-    id_category, price, id_image, count_worn 
+    id_category, price, id_image, count_worn, id_occasion, attribute, color,
   } = req.body;
   db.Clothing_Item.findOrCreate({
     where: {
@@ -84,6 +84,9 @@ app.post('/closet/:userId', (req, res) => {
       price,
       id_image,
       count_worn,
+      id_occasion,
+      attribute,
+      color,
     },
   })
     .then((result) => {
@@ -103,7 +106,7 @@ app.post('/closet/:userId/worn', (req, res) => {
     // returns to client record with updated worn count
     res.send(result);
   }).catch((err) => {
-    console.log(error);
+    console.log(err);
     res.sendStatus(500);
   });
 });
@@ -206,6 +209,8 @@ app.post('/clothingImage', (req, res) => {
   res.sendStatus(200);
 });
 
+
+// add starter data to database
 app.get('/default', (req, res) => {
   db.User.create({
     username: 'Laura',
