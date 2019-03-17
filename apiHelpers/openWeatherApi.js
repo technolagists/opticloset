@@ -11,7 +11,6 @@ const getWeather = (callback) => {
         temp: response.data.list[1].main.temp,
         weather: response.data.list[1].weather[0].description,
       };
-      console.log(response);
       return callback(null, result);
     })
     .catch((error) => {
