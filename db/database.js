@@ -51,6 +51,7 @@ const Category = sequelize.define('category', {
   },
 });
 
+
 const Img = sequelize.define('img', {
   id_img: {
     type: Sequelize.INTEGER,
@@ -67,6 +68,43 @@ const Img = sequelize.define('img', {
     type: Sequelize.STRING,
   },
 });
+
+
+const Occasion = sequelize.define('occasion', {
+  id_occasion: {
+    type: Sequelize.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+  },
+  type: {
+    type: Sequelize.STRING,
+  },
+});
+
+
+const Attribute = sequelize.define('attribute', {
+  id_attribute: {
+    type: Sequelize.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+  },
+  type: {
+    type: Sequelize.STRING,
+  },
+});
+
+
+const Color = sequelize.define('color', {
+  id_color: {
+    type: Sequelize.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+  },
+  type: {
+    type: Sequelize.STRING,
+  },
+});
+
 
 const Clothing_Item = sequelize.define('clothing_item', {
   id_clothing_item: {
@@ -94,8 +132,21 @@ const Clothing_Item = sequelize.define('clothing_item', {
       deferrable: Sequelize.Deferrable.INITIALLY_IMMEDIATE,
     },
   },
-  price: {
+  id_occasion: {
     type: Sequelize.INTEGER,
+    references: {
+      model: Occasion,
+      key: 'id_occasion',
+      deferrable: Sequelize.Deferrable.INITIALLY_IMMEDIATE,
+    },
+  },
+  attribute: {
+    type: Sequelize.STRING,
+    // references: {
+    //   model: Attribute,
+    //   key: 'id_attribute',
+    //   deferrable: Sequelize.Deferrable.INITIALLY_IMMEDIATE,
+    // },
   },
   id_image: {
     type: Sequelize.INTEGER,
@@ -105,41 +156,14 @@ const Clothing_Item = sequelize.define('clothing_item', {
       deferrable: Sequelize.Deferrable.INITIALLY_IMMEDIATE,
     },
   },
-  count_word: {
-    type: Sequelize.INTEGER,
-  },
-});
-
-const Occasion = sequelize.define('occasion', {
-  id_occasion: {
-    type: Sequelize.INTEGER,
-    primaryKey: true,
-    autoIncrement: true,
-  },
-  type: {
+  color: {
     type: Sequelize.STRING,
   },
-});
-
-const Attribute = sequelize.define('attribute', {
-  id_attribute: {
+  price: {
     type: Sequelize.INTEGER,
-    primaryKey: true,
-    autoIncrement: true,
   },
-  type: {
-    type: Sequelize.STRING,
-  },
-});
-
-const Color = sequelize.define('color', {
-  id_color: {
+  count_worn: {
     type: Sequelize.INTEGER,
-    primaryKey: true,
-    autoIncrement: true,
-  },
-  type: {
-    type: Sequelize.STRING,
   },
 });
 
@@ -200,7 +224,6 @@ Clothing_Attribute.belongsTo(Clothing_Item);
 Clothing_Attribute.belongsTo(Attribute);
 Clothing_Item.belongsToMany(Attribute, { through: Clothing_Attribute });
 Attribute.belongsToMany(Clothing_Item, { through: Clothing_Attribute });
-
 
 const Clothing_Color = sequelize.define('clothing_color', {
   id_clothing_color: {
