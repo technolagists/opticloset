@@ -224,6 +224,8 @@ app.post('/imgs', (req, res) => {
   });
 });
 
+const wait = (ms = 3000) => new Promise(res => setTimeout(res, ms));
+
 // when receiving cloudinary url from client
 app.post('/clothingImage/:UserId', (req, res) => {
   const { url } = req.body.response;
@@ -237,11 +239,16 @@ app.post('/clothingImage/:UserId', (req, res) => {
   backgroundRemovalApi.removeBackground(url)
     .then((result) => {
       cleanUrl = result.image_url;
+      return wait();
+    })
+    .then(() => {
       return colorDetectionApi.detectColorsWithUrl(cleanUrl);
-    }).then((colors) => {
+    })
+    .then((colors) => {
       colorsOptions = colors;
       return categoryDetectionApi.detectItemCategory(cleanUrl);
-    }).then((categories) => {
+    })
+    .then((categories) => {
       const result = {
         categories,
         colorsOptions,
