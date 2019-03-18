@@ -60,11 +60,7 @@ module.exports.deleteItem = (clothingId) => {
     where: {
       id_clothing_item: clothingId,
     },
-  })
-    .then(data => data)
-    .catch((err) => {
-      console.log(err);
-    });
+  });
 };
 
 // get info by ID helpers below
