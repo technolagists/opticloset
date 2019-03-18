@@ -36,14 +36,14 @@ module.exports.getClosetByUser = (userId, callback) => {
   });
 };
 
-module.exports.updateClothingAsWorn = (clothingId, callback) => {
+module.exports.updateClothingAsWorn = (clothingId) => {
   // console.log(clothingId);
   return db.Clothing_Item.findOne({
     where: {
       id_clothing_item: clothingId,
     },
   }).then((option) => {
-    return option.increment('count_word'); // assumes `option` always exists
+    return option.increment('count_worn'); // assumes `option` always exists
   }).then((option) => {
     return option.reload();
   }).then((option) => {
@@ -52,6 +52,15 @@ module.exports.updateClothingAsWorn = (clothingId, callback) => {
     .catch((err) => {
       console.log(err);
     });
+};
+
+module.exports.deleteItem = (clothingId) => {
+  // console.log(clothingId);
+  return db.Clothing_Item.destroy({
+    where: {
+      id_clothing_item: clothingId,
+    },
+  });
 };
 
 // get info by ID helpers below
