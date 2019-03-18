@@ -43,7 +43,7 @@ module.exports.updateClothingAsWorn = (clothingId) => {
       id_clothing_item: clothingId,
     },
   }).then((option) => {
-    return option.increment('count_word'); // assumes `option` always exists
+    return option.increment('count_worn'); // assumes `option` always exists
   }).then((option) => {
     return option.reload();
   }).then((option) => {

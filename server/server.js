@@ -4,7 +4,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const db = require('../db/database.js');
 const dbhelper = require('../db/dbhelpers.js');
-const sampleData = require('../sampleData.js');
+// const sampleData = require('../sampleData.js');
 const openWeatherApi = require('../apiHelpers/openWeatherApi');
 const categoryDetectionApi = require('../apiHelpers/clarifaiApi');
 const backgroundRemovalApi = require('../apiHelpers/malabiApi');
@@ -78,15 +78,18 @@ app.post('/closet/:userId', (req, res) => {
   // console.log(req.params.userId);
   const { userId } = req.params;
   const {
-    id_category, price, id_image, count_worn 
+    id_category, price, id_image, count_worn, id_occasion, attribute, color,
   } = req.body;
-    db.Clothing_Item.findOrCreate({
+  db.Clothing_Item.findOrCreate({
     where: {
       id_user: userId,
       id_category,
       price,
       id_image,
       count_worn,
+      id_occasion,
+      attribute,
+      color,
     },
   })
     .then((result) => {
@@ -105,8 +108,8 @@ app.post('/closet/:userId/worn', (req, res) => {
   dbhelper.updateClothingAsWorn(clothingId).then((result) => {
     // returns to client record with updated worn count
     res.send(result);
-  }).catch((error) => {
-    console.log(error);
+  }).catch((err) => {
+    console.log(err);
     res.sendStatus(500);
   });
 });
@@ -251,6 +254,8 @@ app.post('/clothingImage/:UserId', (req, res) => {
     });
 });
 
+
+// add starter data to database
 app.get('/default', (req, res) => {
   // db.User.create({
   //   username: 'Laura',
