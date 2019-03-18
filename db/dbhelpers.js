@@ -54,6 +54,15 @@ module.exports.updateClothingAsWorn = (clothingId) => {
     });
 };
 
+module.exports.deleteItem = (clothingId) => {
+  // console.log(clothingId);
+  return db.Clothing_Item.destroy({
+    where: {
+      id_clothing_item: clothingId,
+    },
+  });
+};
+
 // get info by ID helpers below
 module.exports.getColorById = (colorId, callback) => {
   db.Color.findAll({
