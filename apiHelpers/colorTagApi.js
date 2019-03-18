@@ -36,7 +36,7 @@ const detectColorsWithUrl = (url) => {
     });
 };
 
-// detectColorsWithUrl('https://res.cloudinary.com/opticloset/image/upload/v1552727242/bottom-1.png');
+// detectColorsWithUrl('http://d2f1mfcynop4j.cloudfront.net/999181/20190318/457836951/0c8fd351af7d4f05a5694d9d426af49f_RES.jpg');
 
 module.exports.detectColorsWithImage = detectColorsWithImage;
 module.exports.detectColorsWithUrl = detectColorsWithUrl;
