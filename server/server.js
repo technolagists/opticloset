@@ -223,10 +223,10 @@ app.post('/imgs', (req, res) => {
 
 // when receiving cloudinary url from client
 app.post('/clothingImage/:UserId', (req, res) => {
-  // console.log(req.body.response.url, 'cloudinary response!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
   const { url } = req.body.response;
   let colorsOptions;
   let cleanUrl;
+  console.log(url);
   // sending the cloudinary url to the background removal api
   // send the url provided by the background removal api to :
   // 1) the color detection api
@@ -234,7 +234,6 @@ app.post('/clothingImage/:UserId', (req, res) => {
   backgroundRemovalApi.removeBackground(url)
     .then((result) => {
       cleanUrl = result.image_url;
-      // cleanUrl = 'https://res.cloudinary.com/opticloset/image/upload/v1552727242/bottom-1.png';
       return colorDetectionApi.detectColorsWithUrl(cleanUrl);
     }).then((colors) => {
       colorsOptions = colors;
