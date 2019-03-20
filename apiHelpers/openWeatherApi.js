@@ -1,7 +1,7 @@
 require('dotenv').config();
 const axios = require('axios');
 
-const getWeather = (latLong, callback) => {
+module.exports.getWeather = (latLong) => {
   return axios
     .get(
       `http://api.openweathermap.org/data/2.5/weather?lat=${latLong.latitude}&lon=${latLong.longitude}&units=imperial&APPID=${process.env.OPEN_WEATHER_API_KEY}`,
@@ -18,5 +18,3 @@ const getWeather = (latLong, callback) => {
       return error;
     });
 };
-
-module.exports.getWeather = getWeather;
