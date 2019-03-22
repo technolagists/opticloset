@@ -17,28 +17,29 @@ Once the project moves into development, the press release can be used as a touc
  -->
  
 ## Heading ##
-  > Name the product in a way the reader (i.e. your target customers) will understand.
+  > OptiCloset
 
 ## Sub-Heading ##
-  > Describe who the market for the product is and what benefit they get. One sentence only underneath the title.
+  > Anyone interested in making the most out of her/his closet. Let us help you save time and optimize your closet.
 
 ## Summary ##
-  > Give a summary of the product and the benefit. Assume the reader will not read anything else so make this paragraph good.
+  > Every morning, you get an outfit of the days selected for you based on the weather conditions, items recently used and color matching. Then our stats menu provides you with great insights into your closet, so you know what you own and what you wear. If you decide you want to part with an item, use our direct to market sell feature. 
 
 ## Problem ##
-  > Describe the problem your product solves.
+  > A closet can be large but sometimes messy. What to wear today? What do I use? What do I don't use? That's a lot of questions
 
 ## Solution ##
-  > Describe how your product elegantly solves the problem.
+  > OptiCloset answers those questions for you by selecting a perfect outfit every day based on weather, color matching and recent usage stats. OptiCloset also helps you scan through your closet and sell items you want to part with.
 
 ## Quote from You ##
-  > A quote from a spokesperson in your company.
+  > OptiCloset: the best app on the market for closet optimization
 
 ## How to Get Started ##
-  > Describe how easy it is to get started.
+  > Download the app on your phone, sign up and set your daily notification time then start adding your clothes to your virtual closet by clicking on the add item menu. 
+
 
 ## Customer Quote ##
-  > Provide a quote from a hypothetical customer that describes how they experienced the benefit.
+  > OptiCloset is amazing. Ever since I started using it, I feel much better in the morning, I don't waste time qondering what to wear, what the weather is like, I can go on with the rest of my day right away. Even better, I have realized I had clothes I had forgotten about and I ended up selling them to get new ones I want to wear!
 
 ## Closing and Call to Action ##
-  > Wrap it up and give pointers where the reader should go next.
+  > With OptiCloset, your mornings get easier and your closet gets efficient. Download OptiCloset now to make your life easier!
