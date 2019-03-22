@@ -4,9 +4,9 @@
 
 ## Team
 
-  - __Product Owner__: teamMember
-  - __Scrum Master__: teamMember
-  - __Development Team Members__: teamMember, teamMember
+  - __Product Owner__: 
+  - __Scrum Master__: Jay Kindell
+  - __Development Team Members__: Kaelyn Chresfield, Laura Pena, Julien de la Mettrie
 
 ## Table of Contents
 
@@ -20,15 +20,44 @@
 
 ## Usage
 
-> Some usage instructions
+- Install dependencies (see below)
+
+- Use db/databases.js file to setup a PostgreSQL database instance (locally or on a remote instance)
+
+- Request Keys for the following third-party APIs:
+
+OPEN_WEATHER (https://openweathermap.org/api)
+MALABI (https://www.malabi.co/api-overview/) 
+COLORTAG (https://rapidapi.com/apicloud/api/colortag)
+CLARIFAI (https://clarifai.com/developer/guide/)
+
+- Create a .env file with the following variables:
+
+DB_HOST= 
+DB_USER=
+DB_PASS=
+DB_NAME=
+HOST=
+OPEN_WEATHER_API_KEY=
+MALABI_API_KEY=
+MALABI_API_ID=
+COLORTAG_API_KEY=
+CLARIFAI_API_KEY=
+
+- Start the server by running: 
+
+```sh
+node server/server.js
+```
+
+- For front-end side [here](https://github.com/technolagists/opticloset-client)
 
 ## Requirements
 
 - Node 0.10.x
-- Redis 2.6.x
 - Postgresql 9.1.x
-- etc
-- etc
+- Express 4.16.4
+- Sequelize 4.43.0
 
 ## Development
 
@@ -37,14 +66,13 @@
 From within the root directory:
 
 ```sh
-sudo npm install -g bower
 npm install
-bower install
+
 ```
 
 ### Roadmap
 
-View the project roadmap [here](LINK_TO_PROJECT_ISSUES)
+View the project roadmap [here](https://github.com/technolagists/opticloset/issues)
 
 
 ## Contributing

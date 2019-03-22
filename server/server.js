@@ -25,17 +25,19 @@ app.get('/', (req, res) => {
 
 // testing endpoint for db helper
 app.get('/test', (req, res) => {
-  
+
 });
 
 // Client requesting the weather conditions with a GET request at '/weather' endpoint
 app.get('/weather', (req, res) => {
-  openWeatherApi.getWeather((err, result) => {
-    if (err) {
-      res.status(500).send('Something went wrong!');
-    } else {
-      res.status(200).send(result);
-    }
+  console.log('weather request recvd');
+  const latLong = req.query;
+  openWeatherApi.getWeather(latLong).then((weather) => {
+    console.log('sending weather');
+    res.status(200).send(weather);
+  }).catch((err) => {
+    console.log(err);
+    res.status(500).send('Something went wrong!');
   });
 });
 
@@ -269,13 +271,6 @@ app.get('/default', (req, res) => {
   //   location: 'San Diego',
   // });
 
-  // db.Category.create({ type: 'top' }); // id 1
-  // db.Category.create({ type: 'top' }); // id 2
-  // db.Category.create({ type: 'one-piece' }); // id 3
-  // db.Category.create({ type: 'outerware' }); // id 4
-  // db.Category.create({ type: 'accessory' }); // id 5
-  // db.Category.create({ type: 'bottom' }); // id 6
-
   // db.Img.create({
   //   img_url_fullsize_clean: 'https://res.cloudinary.com/opticloset/image/upload/v1552727035/shirt2.png',
   //   img_url_fullsize_og: 'img url - OG',
@@ -307,94 +302,113 @@ app.get('/default', (req, res) => {
   //   img_url_thumbnail: 'img url - thumbnail',
   // });
 
-  // db.Occasion.create({ type: 'casual' });
-  // db.Occasion.create({ type: 'professional' });
-  // db.Occasion.create({ type: 'dressy' });
-  // db.Occasion.create({ type: 'cocktail' });
-  // db.Occasion.create({ type: 'formal' });
-  // db.Occasion.create({ type: 'office' });
+  // db.Occasion.create({ type: 'casual' }); // 1
+  // db.Occasion.create({ type: 'professional' }); // 2
+  // db.Occasion.create({ type: 'dressy' }); // 3
+  // db.Occasion.create({ type: 'cocktail' }); // 4
+  // db.Occasion.create({ type: 'formal' }); // 5
+  // db.Occasion.create({ type: 'office' }); // 6
 
-  // db.Attribute.create({ type: 'basic' });
-  // db.Attribute.create({ type: 'comfortable' });
-  // db.Attribute.create({ type: 'heavy' });
-  // db.Attribute.create({ type: 'tight' });
-  // db.Attribute.create({ type: 'short' });
-  // db.Attribute.create({ type: 'long' });
+  // db.Attribute.create({ type: 'basic' }); // 1
+  // db.Attribute.create({ type: 'comfortable' }); // 2
+  // db.Attribute.create({ type: 'tight' }); // 3
+  // db.Attribute.create({ type: 'heavy' }); // 4
+  // db.Attribute.create({ type: 'short' }); // 5
+  // db.Attribute.create({ type: 'long' }); // 6
 
-  // db.Color.create({ type: 'dark blue' });
-  // db.Color.create({ type: 'white' });
-  // db.Color.create({ type: 'forest green' });
-  // db.Color.create({ type: 'black' });
-  // db.Color.create({ type: 'baby pink' });
-  // db.Color.create({ type: 'gold' });
+  // db.Color.create({ type: 'dark blue' }); // 1
+  // db.Color.create({ type: 'forest green' }); // 2
+  // db.Color.create({ type: 'white' }); // 3
+  // db.Color.create({ type: 'black' }); // 4
+  // db.Color.create({ type: 'baby pink' }); // 5
+  // db.Color.create({ type: 'gold' }); // 6
 
-  db.Clothing_Item.create({
-    id_user: 1,
-    id_category: 1,
-    id_occasion: 1,
-    attribute: 'casual, cocktail',
-    id_image: 1,
-    color: 'black, grey',
-    price: 100,
-    count_worn: 0,
-  });
+  // db.Category.create({ type: 'top' }); // id 1
+  // db.Category.create({ type: 'top' }); // id 2
+  // db.Category.create({ type: 'one-piece' }); // id 3
+  // db.Category.create({ type: 'outerware' }); // id 4
+  // db.Category.create({ type: 'accessory' }); // id 5
+  // db.Category.create({ type: 'bottom' }); // id 6
+  // db.Category.create({ type: 'shoes' }); // id 13
 
-  db.Clothing_Item.create({
-    id_user: 1,
-    id_category: 2,
-    id_occasion: 2,
-    attribute: 'office, professional',
-    id_image: 2,
-    color: 'pink, grey',
-    price: 50,
-    count_worn: 0,
-  });
+  // db.Clothing_Item.create({
+  //   id_user: 1,
+  //   id_category: 1,
+  //   id_occasion: 1,
+  //   attribute: 'casual, cocktail',
+  //   id_image: 1,
+  //   color: 'black, grey',
+  //   price: 100,
+  //   count_worn: 0,
+  // });
 
-  db.Clothing_Item.create({
-    id_user: 1,
-    id_category: 3,
-    id_occasion: 3,
-    attribute: 'dressy, office',
-    id_image: 3,
-    color: 'dark blue, black',
-    price: 120,
-    count_worn: 0,
-  });
+  // db.Clothing_Item.create({
+  //   id_user: 1,
+  //   id_category: 2,
+  //   id_occasion: 2,
+  //   attribute: 'office, professional',
+  //   id_image: 2,
+  //   color: 'pink, grey',
+  //   price: 50,
+  //   count_worn: 0,
+  // });
 
-  db.Clothing_Item.create({
-    id_user: 1,
-    id_category: 4,
-    id_occasion: 4,
-    attribute: 'casual',
-    id_image: 4,
-    color: 'white',
-    price: 10,
-    count_worn: 0,
-  });
+  // db.Clothing_Item.create({
+  //   id_user: 1,
+  //   id_category: 3,
+  //   id_occasion: 3,
+  //   attribute: 'dressy, office',
+  //   id_image: 3,
+  //   color: 'dark blue, black',
+  //   price: 120,
+  //   count_worn: 0,
+  // });
 
-  db.Clothing_Item.create({
-    id_user: 1,
-    id_category: 5,
-    id_occasion: 5,
-    attribute: 'dressy',
-    id_image: 5,
-    color: 'gold',
-    price: 60,
-    count_worn: 0,
-  });
+  // db.Clothing_Item.create({
+  //   id_user: 1,
+  //   id_category: 4,
+  //   id_occasion: 4,
+  //   attribute: 'casual',
+  //   id_image: 4,
+  //   color: 'white',
+  //   price: 10,
+  //   count_worn: 0,
+  // });
 
-  db.Clothing_Item.create({
-    id_user: 1,
-    id_category: 6,
-    id_occasion: 6,
-    attribute: 'cocktail',
-    id_image: 6,
-    color: 'forest green',
-    price: 120,
-    count_worn: 0,
-  });
+  // db.Clothing_Item.create({
+  //   id_user: 1,
+  //   id_category: 5,
+  //   id_occasion: 5,
+  //   attribute: 'dressy',
+  //   id_image: 5,
+  //   color: 'gold',
+  //   price: 60,
+  //   count_worn: 0,
+  // });
 
-  res.send('default data inserted into db');
+  // db.Clothing_Item.create({
+  //   id_user: 1,
+  //   id_category: 6,
+  //   id_occasion: 6,
+  //   attribute: 'cocktail',
+  //   id_image: 6,
+  //   color: 'forest green',
+  //   price: 120,
+  //   count_worn: 0,
+  // });
+
+  // db.Clothing_Item.create({
+  //   id_user: 1,
+  //   id_category: 13,
+  //   id_occasion: 6,
+  //   attribute: 'casual',
+  //   id_image: 13,
+  //   color: 'black',
+  //   price: 60,
+  //   count_worn: 0,
+  // });
+
+  // res.send('default data inserted into db');
 });
 
 app.listen(PORT, () => {
