@@ -4,8 +4,11 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const db = require('../db/database.js');
 const dbhelper = require('../db/dbhelpers.js');
-const sampleData = require('../sampleData.js');
+// const sampleData = require('../sampleData.js');
 const openWeatherApi = require('../apiHelpers/openWeatherApi');
+const categoryDetectionApi = require('../apiHelpers/clarifaiApi');
+const backgroundRemovalApi = require('../apiHelpers/malabiApi');
+const colorDetectionApi = require('../apiHelpers/colorTagApi');
 
 const PORT = 8080;
 
@@ -113,6 +116,25 @@ app.post('/closet/:userId/worn', (req, res) => {
   });
 });
 
+// remove clothing_item from user's closet
+app.delete('/closet/:userId', (req, res) => {
+  // const { clothingId } = req.params;
+  const { clothingItemId } = req.body;
+  dbhelper.deleteItem(clothingItemId).then((result) => {
+    // returns to client record deleted
+    if (result === 1) {
+      // if item has been deleted
+      res.sendStatus(202);
+    } else {
+      // if the item cannot be deleted
+      res.sendStatus(500);
+    }
+  }).catch((err) => {
+    console.log(err);
+    res.sendStatus(500);
+  });
+});
+
 
 // add new occasion
 app.post('/occasions', (req, res) => {
@@ -204,11 +226,41 @@ app.post('/imgs', (req, res) => {
   });
 });
 
-// recieves picture from the client
-app.post('/clothingImage', (req, res) => {
-  console.log(req.body);
-  console.log('we got something');
-  res.sendStatus(200);
+const wait = (ms = 3000) => new Promise(res => setTimeout(res, ms));
+
+// when receiving cloudinary url from client
+app.post('/clothingImage/:UserId', (req, res) => {
+  const { url } = req.body.response;
+  let colorsOptions;
+  let cleanUrl;
+  console.log(url);
+  // sending the cloudinary url to the background removal api
+  // send the url provided by the background removal api to :
+  // 1) the color detection api
+  // 2) the category detector api
+  backgroundRemovalApi.removeBackground(url)
+    .then((result) => {
+      cleanUrl = result.image_url;
+      return wait();
+    })
+    .then(() => {
+      return colorDetectionApi.detectColorsWithUrl(cleanUrl);
+    })
+    .then((colors) => {
+      colorsOptions = colors;
+      return categoryDetectionApi.detectItemCategory(cleanUrl);
+    })
+    .then((categories) => {
+      const result = {
+        categories,
+        colorsOptions,
+        cleanUrl,
+      };
+      res.send(result);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 });
 
 
@@ -279,84 +331,84 @@ app.get('/default', (req, res) => {
   // db.Category.create({ type: 'bottom' }); // id 6
   // db.Category.create({ type: 'shoes' }); // id 13
 
-  db.Clothing_Item.create({
-    id_user: 1,
-    id_category: 1,
-    id_occasion: 1,
-    attribute: 'casual, cocktail',
-    id_image: 1,
-    color: 'black, grey',
-    price: 100,
-    count_worn: 0,
-  });
+  // db.Clothing_Item.create({
+  //   id_user: 1,
+  //   id_category: 1,
+  //   id_occasion: 1,
+  //   attribute: 'casual, cocktail',
+  //   id_image: 1,
+  //   color: 'black, grey',
+  //   price: 100,
+  //   count_worn: 0,
+  // });
 
-  db.Clothing_Item.create({
-    id_user: 1,
-    id_category: 2,
-    id_occasion: 2,
-    attribute: 'office, professional',
-    id_image: 2,
-    color: 'pink, grey',
-    price: 50,
-    count_worn: 0,
-  });
+  // db.Clothing_Item.create({
+  //   id_user: 1,
+  //   id_category: 2,
+  //   id_occasion: 2,
+  //   attribute: 'office, professional',
+  //   id_image: 2,
+  //   color: 'pink, grey',
+  //   price: 50,
+  //   count_worn: 0,
+  // });
 
-  db.Clothing_Item.create({
-    id_user: 1,
-    id_category: 3,
-    id_occasion: 3,
-    attribute: 'dressy, office',
-    id_image: 3,
-    color: 'dark blue, black',
-    price: 120,
-    count_worn: 0,
-  });
+  // db.Clothing_Item.create({
+  //   id_user: 1,
+  //   id_category: 3,
+  //   id_occasion: 3,
+  //   attribute: 'dressy, office',
+  //   id_image: 3,
+  //   color: 'dark blue, black',
+  //   price: 120,
+  //   count_worn: 0,
+  // });
 
-  db.Clothing_Item.create({
-    id_user: 1,
-    id_category: 4,
-    id_occasion: 4,
-    attribute: 'casual',
-    id_image: 4,
-    color: 'white',
-    price: 10,
-    count_worn: 0,
-  });
+  // db.Clothing_Item.create({
+  //   id_user: 1,
+  //   id_category: 4,
+  //   id_occasion: 4,
+  //   attribute: 'casual',
+  //   id_image: 4,
+  //   color: 'white',
+  //   price: 10,
+  //   count_worn: 0,
+  // });
 
-  db.Clothing_Item.create({
-    id_user: 1,
-    id_category: 5,
-    id_occasion: 5,
-    attribute: 'dressy',
-    id_image: 5,
-    color: 'gold',
-    price: 60,
-    count_worn: 0,
-  });
+  // db.Clothing_Item.create({
+  //   id_user: 1,
+  //   id_category: 5,
+  //   id_occasion: 5,
+  //   attribute: 'dressy',
+  //   id_image: 5,
+  //   color: 'gold',
+  //   price: 60,
+  //   count_worn: 0,
+  // });
 
-  db.Clothing_Item.create({
-    id_user: 1,
-    id_category: 6,
-    id_occasion: 6,
-    attribute: 'cocktail',
-    id_image: 6,
-    color: 'forest green',
-    price: 120,
-    count_worn: 0,
-  });
+  // db.Clothing_Item.create({
+  //   id_user: 1,
+  //   id_category: 6,
+  //   id_occasion: 6,
+  //   attribute: 'cocktail',
+  //   id_image: 6,
+  //   color: 'forest green',
+  //   price: 120,
+  //   count_worn: 0,
+  // });
 
-  db.Clothing_Item.create({
-    id_user: 1,
-    id_category: 13,
-    id_occasion: 6,
-    attribute: 'casual',
-    id_image: 13,
-    color: 'black',
-    price: 60,
-    count_worn: 0,
-  });
+  // db.Clothing_Item.create({
+  //   id_user: 1,
+  //   id_category: 13,
+  //   id_occasion: 6,
+  //   attribute: 'casual',
+  //   id_image: 13,
+  //   color: 'black',
+  //   price: 60,
+  //   count_worn: 0,
+  // });
 
-  res.send('default data inserted into db');
+  // res.send('default data inserted into db');
 });
 
 app.listen(PORT, () => {
