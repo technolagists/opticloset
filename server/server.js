@@ -27,8 +27,10 @@ app.get('/test', (req, res) => {
 
 // Client requesting the weather conditions with a GET request at '/weather' endpoint
 app.get('/weather', (req, res) => {
+  console.log('weather request recvd');
   const latLong = req.query;
   openWeatherApi.getWeather(latLong).then((weather) => {
+    console.log('sending weather');
     res.status(200).send(weather);
   }).catch((err) => {
     console.log(err);
