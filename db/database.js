@@ -286,7 +286,7 @@ Clothing_Item.belongsToMany(Color, { through: Clothing_Color });
 Color.belongsToMany(Clothing_Item, { through: Clothing_Color });
 
 // Clears and rebuilds the database
-sequelize.sync({ force: true });
+// sequelize.sync({ force: true });
 
 module.exports = {
   User,
