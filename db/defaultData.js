@@ -1,9 +1,12 @@
 const db = require('./database.js');
 
 module.exports.starterDbInfo = () => {
-  db.User.create({
-    username: 'Laura',
-    location: 'San Diego',
+  db.User.findOrCreate({
+    where: {
+      username: 'Laura',
+      latitude: '29.977465900000002',
+      longitude: '-90.075864',
+    },
   }); // 1
 
   db.Occasion.create({ type: 'casual' }); // 1
