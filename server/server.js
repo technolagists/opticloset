@@ -269,10 +269,10 @@ app.post('/clothingImage/:UserId', (req, res) => {
 // add starter data to database
 app.get('/default', (req, res) => {
   // adds categories, occasions, attributes, colors, and imgs
+  // adds clothing items
   Promise.all([dbDefaultData.starterDbInfo(), dbDefaultData.starterClothes()]).then((results) => {
     res.send('default data inserted into db');
   });
-  // adds clothing items
 });
 
 app.listen(PORT, () => {
