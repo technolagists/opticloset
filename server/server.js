@@ -4,6 +4,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const db = require('../db/database.js');
 const dbhelper = require('../db/dbhelpers.js');
+const dbDefaultData = require('../db/defaultData.js');
 // const sampleData = require('../sampleData.js');
 const openWeatherApi = require('../apiHelpers/openWeatherApi');
 const categoryDetectionApi = require('../apiHelpers/clarifaiApi');
@@ -47,11 +48,12 @@ app.get('/weather', (req, res) => {
 // create new user
 app.post('/users', (req, res) => {
   // get username and location from req.body
-  const { username, location } = req.body;
+  const { username } = req.body;
   // add user to db
-  db.User.create({
-    username,
-    location,
+  db.User.findOrCreate({
+    where: {
+      username,
+    },
   }).then((result) => {
     // send confirmation to client that user was added successfully
     res.send(`${JSON.stringify(result.dataValues)}`);
@@ -266,149 +268,11 @@ app.post('/clothingImage/:UserId', (req, res) => {
 
 // add starter data to database
 app.get('/default', (req, res) => {
-  // db.User.create({
-  //   username: 'Laura',
-  //   location: 'San Diego',
-  // });
-
-  // db.Img.create({
-  //   img_url_fullsize_clean: 'https://res.cloudinary.com/opticloset/image/upload/v1552727035/shirt2.png',
-  //   img_url_fullsize_og: 'img url - OG',
-  //   img_url_thumbnail: 'img url - thumbnail',
-  // });
-  // db.Img.create({
-  //   img_url_fullsize_clean: 'https://res.cloudinary.com/opticloset/image/upload/v1552726975/shirt-1.png',
-  //   img_url_fullsize_og: 'img url - OG',
-  //   img_url_thumbnail: 'img url - thumbnail',
-  // });
-  // db.Img.create({
-  //   img_url_fullsize_clean: 'https://res.cloudinary.com/opticloset/image/upload/v1552727112/dress-1.png',
-  //   img_url_fullsize_og: 'img url - OG',
-  //   img_url_thumbnail: 'img url - thumbnail',
-  // });
-  // db.Img.create({
-  //   img_url_fullsize_clean: 'https://res.cloudinary.com/opticloset/image/upload/v1552727133/outerwear-1.png',
-  //   img_url_fullsize_og: 'img url - OG',
-  //   img_url_thumbnail: 'img url - thumbnail',
-  // });
-  // db.Img.create({
-  //   img_url_fullsize_clean: 'https://res.cloudinary.com/opticloset/image/upload/v1552727208/acc-1.png',
-  //   img_url_fullsize_og: 'img url - OG',
-  //   img_url_thumbnail: 'img url - thumbnail',
-  // });
-  // db.Img.create({
-  //   img_url_fullsize_clean: 'https://res.cloudinary.com/opticloset/image/upload/v1552727242/bottom-1.png',
-  //   img_url_fullsize_og: 'img url - OG',
-  //   img_url_thumbnail: 'img url - thumbnail',
-  // });
-
-  // db.Occasion.create({ type: 'casual' }); // 1
-  // db.Occasion.create({ type: 'professional' }); // 2
-  // db.Occasion.create({ type: 'dressy' }); // 3
-  // db.Occasion.create({ type: 'cocktail' }); // 4
-  // db.Occasion.create({ type: 'formal' }); // 5
-  // db.Occasion.create({ type: 'office' }); // 6
-
-  // db.Attribute.create({ type: 'basic' }); // 1
-  // db.Attribute.create({ type: 'comfortable' }); // 2
-  // db.Attribute.create({ type: 'tight' }); // 3
-  // db.Attribute.create({ type: 'heavy' }); // 4
-  // db.Attribute.create({ type: 'short' }); // 5
-  // db.Attribute.create({ type: 'long' }); // 6
-
-  // db.Color.create({ type: 'dark blue' }); // 1
-  // db.Color.create({ type: 'forest green' }); // 2
-  // db.Color.create({ type: 'white' }); // 3
-  // db.Color.create({ type: 'black' }); // 4
-  // db.Color.create({ type: 'baby pink' }); // 5
-  // db.Color.create({ type: 'gold' }); // 6
-
-  // db.Category.create({ type: 'top' }); // id 1
-  // db.Category.create({ type: 'top' }); // id 2
-  // db.Category.create({ type: 'one-piece' }); // id 3
-  // db.Category.create({ type: 'outerware' }); // id 4
-  // db.Category.create({ type: 'accessory' }); // id 5
-  // db.Category.create({ type: 'bottom' }); // id 6
-  // db.Category.create({ type: 'shoes' }); // id 13
-
-  // db.Clothing_Item.create({
-  //   id_user: 1,
-  //   id_category: 1,
-  //   id_occasion: 1,
-  //   attribute: 'casual, cocktail',
-  //   id_image: 1,
-  //   color: 'black, grey',
-  //   price: 100,
-  //   count_worn: 0,
-  // });
-
-  // db.Clothing_Item.create({
-  //   id_user: 1,
-  //   id_category: 2,
-  //   id_occasion: 2,
-  //   attribute: 'office, professional',
-  //   id_image: 2,
-  //   color: 'pink, grey',
-  //   price: 50,
-  //   count_worn: 0,
-  // });
-
-  // db.Clothing_Item.create({
-  //   id_user: 1,
-  //   id_category: 3,
-  //   id_occasion: 3,
-  //   attribute: 'dressy, office',
-  //   id_image: 3,
-  //   color: 'dark blue, black',
-  //   price: 120,
-  //   count_worn: 0,
-  // });
-
-  // db.Clothing_Item.create({
-  //   id_user: 1,
-  //   id_category: 4,
-  //   id_occasion: 4,
-  //   attribute: 'casual',
-  //   id_image: 4,
-  //   color: 'white',
-  //   price: 10,
-  //   count_worn: 0,
-  // });
-
-  // db.Clothing_Item.create({
-  //   id_user: 1,
-  //   id_category: 5,
-  //   id_occasion: 5,
-  //   attribute: 'dressy',
-  //   id_image: 5,
-  //   color: 'gold',
-  //   price: 60,
-  //   count_worn: 0,
-  // });
-
-  // db.Clothing_Item.create({
-  //   id_user: 1,
-  //   id_category: 6,
-  //   id_occasion: 6,
-  //   attribute: 'cocktail',
-  //   id_image: 6,
-  //   color: 'forest green',
-  //   price: 120,
-  //   count_worn: 0,
-  // });
-
-  // db.Clothing_Item.create({
-  //   id_user: 1,
-  //   id_category: 13,
-  //   id_occasion: 6,
-  //   attribute: 'casual',
-  //   id_image: 13,
-  //   color: 'black',
-  //   price: 60,
-  //   count_worn: 0,
-  // });
-
-  // res.send('default data inserted into db');
+  // adds categories, occasions, attributes, colors, and imgs
+  dbDefaultData.starterDbInfo();
+  // adds clothing items
+  dbDefaultData.starterClothes();
+  res.send('default data inserted into db');
 });
 
 app.listen(PORT, () => {
