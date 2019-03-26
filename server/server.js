@@ -274,10 +274,11 @@ app.post('/imgs', (req, res) => {
 const wait = (ms = 3000) => new Promise(res => setTimeout(res, ms));
 
 // when receiving cloudinary url from client
-app.post('/clothingImage/:UserId', (req, res) => {
+app.post('/clothingImage/1', (req, res) => {
   const { url } = req.body.response;
   let colorsOptions;
   let cleanUrl;
+  let idOfTheImg;
   console.log(url);
   // sending the cloudinary url to the background removal api
   // send the url provided by the background removal api to :
@@ -286,13 +287,24 @@ app.post('/clothingImage/:UserId', (req, res) => {
   backgroundRemovalApi.removeBackground(url)
     .then((result) => {
       cleanUrl = result.image_url;
-      return wait();
+      return wait(5000);
     })
     .then(() => {
+      return db.Img.findOrCreate({
+        where: {
+          img_url_fullsize_clean: cleanUrl,
+          img_url_fullsize_og: url,
+        },
+      });
+    })
+    .then((idImg) => {
+      idOfTheImg = idImg[0].id_img;
+      console.log(colorDetectionApi.detectColorsWithUrl(cleanUrl), 2);
       return colorDetectionApi.detectColorsWithUrl(cleanUrl);
     })
     .then((colors) => {
       colorsOptions = colors;
+      console.log(colorsOptions, 3);
       return categoryDetectionApi.detectItemCategory(cleanUrl);
     })
     .then((categories) => {
@@ -300,6 +312,7 @@ app.post('/clothingImage/:UserId', (req, res) => {
         categories,
         colorsOptions,
         cleanUrl,
+        idOfTheImg,
       };
       res.send(result);
     })
