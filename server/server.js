@@ -175,23 +175,6 @@ app.put('/closet/:userId', (req, res) => {
       console.log(err);
       res.sendStatus(500);
     });
-
-
-  const { type } = req.body;
-  // use findOrCreate - if record exists, return record, if it does not exist, create record
-  db.Occasion.findOrCreate({
-    where: { type },
-  })
-    .then((result) => {
-      // send confirmation to client that occasion was added or found successfully
-      res.send(`${JSON.stringify(result[0].dataValues)}`);
-    }).catch((err) => {
-      // log error and send status response to client
-      console.error(err);
-      res.sendStatus(500);
-    });
-
-
 });
 
 // add new occasion
