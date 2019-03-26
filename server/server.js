@@ -133,6 +133,66 @@ app.delete('/closet/:userId', (req, res) => {
   });
 });
 
+// update clothing_item in user's closet
+app.put('/closet/:userId', (req, res) => {
+  const { userId } = req.params;
+  const {
+    id_clothing_item,
+    id_category,
+    price,
+    id_image,
+    count_worn,
+    id_occasion,
+    attribute,
+    color
+  } = req.body;
+
+  db.Clothing_Item.update(
+    {
+      id_user: userId,
+      id_category,
+      price,
+      id_image,
+      count_worn,
+      id_occasion,
+      attribute,
+      color,
+    } /* set attributes' value */,
+    { where: { id_clothing_item } },
+  )
+    .then((result) => {
+      // returns to client record deleted
+      console.log('result from DB update', result);
+      if (result[0] === 1) {
+        // if item has been updated
+        res.sendStatus(202);
+      } else {
+        // if the item cannot be updated
+        res.sendStatus(500);
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      res.sendStatus(500);
+    });
+
+
+  const { type } = req.body;
+  // use findOrCreate - if record exists, return record, if it does not exist, create record
+  db.Occasion.findOrCreate({
+    where: { type },
+  })
+    .then((result) => {
+      // send confirmation to client that occasion was added or found successfully
+      res.send(`${JSON.stringify(result[0].dataValues)}`);
+    }).catch((err) => {
+      // log error and send status response to client
+      console.error(err);
+      res.sendStatus(500);
+    });
+
+
+});
 
 // add new occasion
 app.post('/occasions', (req, res) => {
