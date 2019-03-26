@@ -6,14 +6,23 @@ const Sequelize = require('sequelize');
 const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASS, {
   host: process.env.DB_HOST,
   dialect: 'postgres',
-
   pool: {
     max: 5,
     min: 0,
     idle: 10000,
   },
-
 });
+
+// for connection to postgres locally
+// const sequelize = new Sequelize('opticloset', 'laurapena', '', {
+//   host: 'localhost',
+//   dialect: 'postgres',
+//   pool: {
+//     max: 5,
+//     min: 0,
+//     idle: 10000,
+//   },
+// });
 
 // confirm that connection to remote DB has been made
 sequelize
@@ -34,8 +43,12 @@ const User = sequelize.define('user', {
   },
   username: {
     type: Sequelize.STRING,
+    allowNull: false,
   },
-  location: {
+  latitude: {
+    type: Sequelize.STRING,
+  },
+  longitude: {
     type: Sequelize.STRING,
   },
 });
@@ -48,6 +61,7 @@ const Category = sequelize.define('category', {
   },
   type: {
     type: Sequelize.STRING,
+    allowNull: false,
   },
 });
 
@@ -60,6 +74,7 @@ const Img = sequelize.define('img', {
   },
   img_url_fullsize_clean: {
     type: Sequelize.STRING,
+    allowNull: false,
   },
   img_url_fullsize_og: {
     type: Sequelize.STRING,
@@ -78,6 +93,7 @@ const Occasion = sequelize.define('occasion', {
   },
   type: {
     type: Sequelize.STRING,
+    allowNull: false,
   },
 });
 
@@ -90,6 +106,7 @@ const Attribute = sequelize.define('attribute', {
   },
   type: {
     type: Sequelize.STRING,
+    allowNull: false,
   },
 });
 
@@ -102,6 +119,7 @@ const Color = sequelize.define('color', {
   },
   type: {
     type: Sequelize.STRING,
+    allowNull: false,
   },
 });
 
@@ -114,6 +132,7 @@ const Clothing_Item = sequelize.define('clothing_item', {
   },
   id_user: {
     type: Sequelize.INTEGER,
+    allowNull: false,
     // creating foreign key
     references: {
       // This is a reference to another model
@@ -126,6 +145,7 @@ const Clothing_Item = sequelize.define('clothing_item', {
   },
   id_category: {
     type: Sequelize.INTEGER,
+    allowNull: false,
     references: {
       model: Category,
       key: 'id_category',
@@ -134,6 +154,7 @@ const Clothing_Item = sequelize.define('clothing_item', {
   },
   id_occasion: {
     type: Sequelize.INTEGER,
+    allowNull: false,
     references: {
       model: Occasion,
       key: 'id_occasion',
@@ -142,6 +163,7 @@ const Clothing_Item = sequelize.define('clothing_item', {
   },
   attribute: {
     type: Sequelize.STRING,
+    allowNull: false,
     // references: {
     //   model: Attribute,
     //   key: 'id_attribute',
@@ -150,6 +172,7 @@ const Clothing_Item = sequelize.define('clothing_item', {
   },
   id_image: {
     type: Sequelize.INTEGER,
+    allowNull: false,
     references: {
       model: Img,
       key: 'id_img',
@@ -158,12 +181,14 @@ const Clothing_Item = sequelize.define('clothing_item', {
   },
   color: {
     type: Sequelize.STRING,
+    allowNull: false,
   },
   price: {
     type: Sequelize.INTEGER,
   },
   count_worn: {
     type: Sequelize.INTEGER,
+    allowNull: false,
   },
 });
 
@@ -175,6 +200,7 @@ const Clothing_Occasion = sequelize.define('clothing_occasion', {
   },
   id_clothing_item: {
     type: Sequelize.INTEGER,
+    allowNull: false,
     references: {
       model: Clothing_Item,
       key: 'id_clothing_item',
@@ -183,6 +209,7 @@ const Clothing_Occasion = sequelize.define('clothing_occasion', {
   },
   id_occasion: {
     type: Sequelize.INTEGER,
+    allowNull: false,
     references: {
       model: Occasion,
       key: 'id_occasion',
@@ -204,6 +231,7 @@ const Clothing_Attribute = sequelize.define('clothing_attribute', {
   },
   id_clothing_item: {
     type: Sequelize.INTEGER,
+    allowNull: false,
     references: {
       model: Clothing_Item,
       key: 'id_clothing_item',
@@ -212,6 +240,7 @@ const Clothing_Attribute = sequelize.define('clothing_attribute', {
   },
   id_attribute: {
     type: Sequelize.INTEGER,
+    allowNull: false,
     references: {
       model: Attribute,
       key: 'id_attribute',
@@ -233,6 +262,7 @@ const Clothing_Color = sequelize.define('clothing_color', {
   },
   id_clothing_item: {
     type: Sequelize.INTEGER,
+    allowNull: false,
     reference: {
       model: Clothing_Item,
       key: 'id_clothing_item',
@@ -241,6 +271,7 @@ const Clothing_Color = sequelize.define('clothing_color', {
   },
   id_color: {
     type: Sequelize.INTEGER,
+    allowNull: false,
     reference: {
       model: Color,
       key: 'id_color',
