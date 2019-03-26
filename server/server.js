@@ -148,7 +148,8 @@ app.put('/closet/:userId', (req, res) => {
     count_worn,
     id_occasion,
     attribute,
-    color
+    color,
+    category,
   } = req.body;
 
   db.Clothing_Item.update(
@@ -161,6 +162,7 @@ app.put('/closet/:userId', (req, res) => {
       id_occasion,
       attribute,
       color,
+      category,
     } /* set attributes' value */,
     { where: { id_clothing_item } },
   )
