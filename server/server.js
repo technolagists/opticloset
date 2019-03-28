@@ -137,6 +137,51 @@ app.delete('/closet/:userId', (req, res) => {
   });
 });
 
+// update clothing_item in user's closet
+app.put('/closet/:userId', (req, res) => {
+  const { userId } = req.params;
+  const {
+    id_clothing_item,
+    id_category,
+    price,
+    id_image,
+    count_worn,
+    id_occasion,
+    attribute,
+    color,
+    category,
+  } = req.body;
+
+  db.Clothing_Item.update(
+    {
+      id_user: userId,
+      id_category,
+      price,
+      id_image,
+      count_worn,
+      id_occasion,
+      attribute,
+      color,
+      category,
+    } /* set attributes' value */,
+    { where: { id_clothing_item } },
+  )
+    .then((result) => {
+      // returns to client record deleted
+      console.log('result from DB update', result);
+      if (result[0] === 1) {
+        // if item has been updated
+        res.sendStatus(202);
+      } else {
+        // if the item cannot be updated
+        res.sendStatus(500);
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      res.sendStatus(500);
+    });
+});
 
 // add new occasion
 app.post('/occasions', (req, res) => {
