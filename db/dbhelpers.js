@@ -1,38 +1,44 @@
 const db = require('./database.js');
 
-module.exports.getClosetByUser = (userId, callback) => {
-  db.Clothing_Item.findAll({
+module.exports.getClosetByUser = (username, callback) => {
+  db.User.findOrCreate({
     where: {
-      id_user: userId,
+      username,
     },
-  }).then((clothes) => {
-    const catImagePromises = clothes.map((clothingItem) => {
-      return db.Category.findOne({
-        where: {
-          id_category: clothingItem.id_category,
-        },
-      })
-        .then((category) => {
-          return db.Img.findOne({
-            where: {
-              id_img: clothingItem.id_image,
-            },
-          })
-            .then((image) => {
-              const retClothingItem = Object.assign(clothingItem);
-              retClothingItem.dataValues.imageUrl = image.img_url_fullsize_clean;
-              retClothingItem.dataValues.category = category.type;
-              return retClothingItem;
-            });
+  }).then((user) => {
+    db.Clothing_Item.findAll({
+      where: {
+        id_user: user[0].dataValues.id_user,
+      },
+    }).then((clothes) => {
+      const catImagePromises = clothes.map((clothingItem) => {
+        return db.Category.findOne({
+          where: {
+            id_category: clothingItem.id_category,
+          },
+        })
+          .then((category) => {
+            return db.Img.findOne({
+              where: {
+                id_img: clothingItem.id_image,
+              },
+            })
+              .then((image) => {
+                const retClothingItem = Object.assign(clothingItem);
+                retClothingItem.dataValues.imageUrl = image.img_url_fullsize_clean;
+                retClothingItem.dataValues.category = category.type;
+                return retClothingItem;
+              });
+          });
+      });
+      Promise.all(catImagePromises)
+        .then((newClothes) => {
+          callback(null, newClothes);
+        })
+        .catch((err) => {
+          callback(err);
         });
     });
-    Promise.all(catImagePromises)
-      .then((newClothes) => {
-        callback(null, newClothes);
-      })
-      .catch((err) => {
-        callback(err);
-      });
   });
 };
 
