@@ -27,6 +27,7 @@ module.exports.getClosetByUser = (username, callback) => {
                 const retClothingItem = Object.assign(clothingItem);
                 retClothingItem.dataValues.imageUrl = image.img_url_fullsize_clean;
                 retClothingItem.dataValues.category = category.type;
+                retClothingItem.dataValues.lastUpdated = new Date(clothingItem.updatedAt).toString().slice(4, 15);
                 return retClothingItem;
               });
           });
