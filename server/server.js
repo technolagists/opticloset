@@ -10,6 +10,8 @@ const openWeatherApi = require('../apiHelpers/openWeatherApi');
 const categoryDetectionApi = require('../apiHelpers/clarifaiApi');
 const backgroundRemovalApi = require('../apiHelpers/malabiApi');
 const colorDetectionApi = require('../apiHelpers/colorTagApi');
+const geocodingApi = require('../apiHelpers/googleMapsApi');
+
 
 const PORT = 8080;
 
@@ -36,6 +38,20 @@ app.get('/weather', (req, res) => {
   openWeatherApi.getWeather(latLong).then((weather) => {
     console.log('sending weather');
     res.status(200).send(weather);
+  }).catch((err) => {
+    console.log(err);
+    res.status(500).send('Something went wrong!');
+  });
+});
+
+
+// Client requesting the weather conditions with a GET request at '/weather' endpoint
+app.get('/location', (req, res) => {
+  console.log(req);
+  const { latlng } = req.query;
+  geocodingApi.getLocation(latlng).then((location) => {
+    // console.log('sending weather');
+    res.status(200).send([location]);
   }).catch((err) => {
     console.log(err);
     res.status(500).send('Something went wrong!');
