@@ -51,7 +51,7 @@ app.get('/location', (req, res) => {
   const { latlng } = req.query;
   geocodingApi.getLocation(latlng).then((location) => {
     // console.log('sending weather');
-    res.status(200).send(location);
+    res.status(200).send([location]);
   }).catch((err) => {
     console.log(err);
     res.status(500).send('Something went wrong!');
