@@ -12,7 +12,7 @@ module.exports.getClosetByUser = (username, callback) => {
         id_user: user[0].dataValues.id_user,
       },
     }).then((clothes) => {
-      const catImagePromises = clothes.map(clothingItem => db.Category.findOne({ // retrieve the categoy record based on categoryId
+      const catImagePromises = clothes.map(clothingItem => db.Category.findOne({ // retrieve the category record based on categoryId
         where: {
           id_category: clothingItem.id_category,
         },
