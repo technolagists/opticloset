@@ -35,6 +35,7 @@ sequelize
   })
   .done();
 
+// define the User model
 const User = sequelize.define('user', {
   id_user: {
     type: Sequelize.INTEGER,
@@ -53,6 +54,7 @@ const User = sequelize.define('user', {
   },
 });
 
+// define the Category model
 const Category = sequelize.define('category', {
   id_category: {
     type: Sequelize.INTEGER,
@@ -65,7 +67,7 @@ const Category = sequelize.define('category', {
   },
 });
 
-
+// define the Img model
 const Img = sequelize.define('img', {
   id_img: {
     type: Sequelize.INTEGER,
@@ -84,7 +86,7 @@ const Img = sequelize.define('img', {
   },
 });
 
-
+// define the Occasion model
 const Occasion = sequelize.define('occasion', {
   id_occasion: {
     type: Sequelize.INTEGER,
@@ -97,7 +99,7 @@ const Occasion = sequelize.define('occasion', {
   },
 });
 
-
+// define the Attribute model
 const Attribute = sequelize.define('attribute', {
   id_attribute: {
     type: Sequelize.INTEGER,
@@ -110,7 +112,7 @@ const Attribute = sequelize.define('attribute', {
   },
 });
 
-
+// define the Color model
 const Color = sequelize.define('color', {
   id_color: {
     type: Sequelize.INTEGER,
@@ -123,7 +125,7 @@ const Color = sequelize.define('color', {
   },
 });
 
-
+// define the Clothing_Item model
 const Clothing_Item = sequelize.define('clothing_item', {
   id_clothing_item: {
     type: Sequelize.INTEGER,
@@ -192,6 +194,7 @@ const Clothing_Item = sequelize.define('clothing_item', {
   },
 });
 
+// define the Clothing_Occasion model
 const Clothing_Occasion = sequelize.define('clothing_occasion', {
   id_clothing_occasion: {
     type: Sequelize.INTEGER,
@@ -218,11 +221,13 @@ const Clothing_Occasion = sequelize.define('clothing_occasion', {
   },
 });
 
+// Many to many association between Clothing_Occasion and Clothing_Item
 Clothing_Occasion.belongsTo(Clothing_Item);
 Clothing_Occasion.belongsTo(Occasion);
 Clothing_Item.belongsToMany(Occasion, { through: Clothing_Occasion });
 Occasion.belongsToMany(Clothing_Item, { through: Clothing_Occasion });
 
+// define Clothing_Attribute model
 const Clothing_Attribute = sequelize.define('clothing_attribute', {
   id_clothing_attribute: {
     type: Sequelize.INTEGER,
@@ -249,11 +254,13 @@ const Clothing_Attribute = sequelize.define('clothing_attribute', {
   },
 });
 
+// Many to Many association between Clothing_Occasion and Clothing_Item
 Clothing_Attribute.belongsTo(Clothing_Item);
 Clothing_Attribute.belongsTo(Attribute);
 Clothing_Item.belongsToMany(Attribute, { through: Clothing_Attribute });
 Attribute.belongsToMany(Clothing_Item, { through: Clothing_Attribute });
 
+// define Clothing_Color model
 const Clothing_Color = sequelize.define('clothing_color', {
   id_clothing_color: {
     type: Sequelize.INTEGER,
@@ -280,6 +287,7 @@ const Clothing_Color = sequelize.define('clothing_color', {
   },
 });
 
+// Many to Many association between Clothing_Item and Color
 Clothing_Color.belongsTo(Clothing_Item);
 Clothing_Color.belongsTo(Color);
 Clothing_Item.belongsToMany(Color, { through: Clothing_Color });

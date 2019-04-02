@@ -1,40 +1,37 @@
 const db = require('./database.js');
 
+// retrieve all clothing_items records for a particular user
 module.exports.getClosetByUser = (username, callback) => {
-  db.User.findOrCreate({
+  db.User.findOrCreate({ // find the user record linked to input usernam
     where: {
       username,
     },
   }).then((user) => {
-    db.Clothing_Item.findAll({
+    db.Clothing_Item.findAll({ // retrieve all clothing items for that user
       where: {
         id_user: user[0].dataValues.id_user,
       },
     }).then((clothes) => {
-      const catImagePromises = clothes.map((clothingItem) => {
-        return db.Category.findOne({
+      const catImagePromises = clothes.map(clothingItem => db.Category.findOne({ // retrieve the categoy record based on categoryId
+        where: {
+          id_category: clothingItem.id_category,
+        },
+      })
+        .then(category => db.Img.findOne({ // retrieve the Img record based on the imageId
           where: {
-            id_category: clothingItem.id_category,
+            id_img: clothingItem.id_image,
           },
         })
-          .then((category) => {
-            return db.Img.findOne({
-              where: {
-                id_img: clothingItem.id_image,
-              },
-            })
-              .then((image) => {
-                const retClothingItem = Object.assign(clothingItem);
-                retClothingItem.dataValues.imageUrl = image.img_url_fullsize_clean;
-                retClothingItem.dataValues.category = category.type;
-                retClothingItem.dataValues.lastUpdated = new Date(clothingItem.updatedAt).toString().slice(4, 15);
-                return retClothingItem;
-              });
-          });
-      });
-      Promise.all(catImagePromises)
+          .then((image) => { // then adds 3 properties on the result object
+            const retClothingItem = Object.assign(clothingItem);
+            retClothingItem.dataValues.imageUrl = image.img_url_fullsize_clean; // url of the image without background
+            retClothingItem.dataValues.category = category.type; // category name
+            retClothingItem.dataValues.lastUpdated = new Date(clothingItem.updatedAt).toString().slice(4, 15); // formatted last update date
+            return retClothingItem;
+          })));
+      Promise.all(catImagePromises) // making catImagePromises a promise
         .then((newClothes) => {
-          callback(null, newClothes);
+          callback(null, newClothes); // then invoke callback on result object
         })
         .catch((err) => {
           callback(err);
@@ -43,32 +40,23 @@ module.exports.getClosetByUser = (username, callback) => {
   });
 };
 
-module.exports.updateClothingAsWorn = (clothingId) => {
-  // console.log(clothingId);
-  return db.Clothing_Item.findOne({
-    where: {
-      id_clothing_item: clothingId,
-    },
-  }).then((option) => {
-    return option.increment('count_worn'); // assumes `option` always exists
-  }).then((option) => {
-    return option.reload();
-  }).then((option) => {
-    return option;
-  })
-    .catch((err) => {
-      console.log(err);
-    });
-};
-
-module.exports.deleteItem = (clothingId) => {
-  // console.log(clothingId);
-  return db.Clothing_Item.destroy({
-    where: {
-      id_clothing_item: clothingId,
-    },
+// increments the count worn of a clothing_item by 1
+module.exports.updateClothingAsWorn = clothingId => db.Clothing_Item.findOne({
+  where: {
+    id_clothing_item: clothingId,
+  },
+}).then(option => option.increment('count_worn')) // assumes `option` always exists
+  .then(option => option.reload()).then(option => option)
+  .catch((err) => {
+    console.log(err);
   });
-};
+
+// delete clothing_item given a clothingId
+module.exports.deleteItem = clothingId => db.Clothing_Item.destroy({
+  where: {
+    id_clothing_item: clothingId,
+  },
+});
 
 // get info by ID helpers below
 module.exports.getColorById = (colorId, callback) => {

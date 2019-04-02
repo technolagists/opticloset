@@ -5,7 +5,6 @@ const bodyParser = require('body-parser');
 const db = require('../db/database.js');
 const dbhelper = require('../db/dbhelpers.js');
 const dbDefaultData = require('../db/defaultData.js');
-// const sampleData = require('../sampleData.js');
 const openWeatherApi = require('../apiHelpers/openWeatherApi');
 const categoryDetectionApi = require('../apiHelpers/clarifaiApi');
 const backgroundRemovalApi = require('../apiHelpers/malabiApi');
@@ -80,7 +79,7 @@ app.post('/users', (req, res) => {
   });
 });
 
-// get the entire closet for one user
+// get the entire closet for a user
 app.get('/closet/:username', (req, res) => {
   // console.log(req.params.userId);
   const { username } = req.params;
@@ -95,7 +94,6 @@ app.get('/closet/:username', (req, res) => {
 
 // add clothing_item to user's closet
 app.post('/closet/:userId', (req, res) => {
-  // console.log(req.params.userId);
   const { userId } = req.params;
   const {
     id_category, price, id_image, count_worn, id_occasion, attribute, color,
