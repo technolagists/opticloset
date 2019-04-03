@@ -5,8 +5,8 @@ const axios = require('axios');
 const removeBackground = (url) => {
   return axios({
     method: 'post',
-    // url: 'https://api.malabi.co/v1/images',
-    url: 'https://api.malabi.co/test/images',
+    url: 'https://api.malabi.co/v1/images',
+    // url: 'https://api.malabi.co/test/images',
     headers: {
       'x-api-key': process.env.MALABI_API_KEY,
       'x-api-id': process.env.MALABI_API_ID,

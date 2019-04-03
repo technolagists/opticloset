@@ -192,6 +192,11 @@ const Clothing_Item = sequelize.define('clothing_item', {
     type: Sequelize.INTEGER,
     allowNull: false,
   },
+  selling: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: false,
+    allowNull: false,
+  },
 });
 
 // define the Clothing_Occasion model

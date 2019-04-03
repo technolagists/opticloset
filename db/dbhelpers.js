@@ -1,7 +1,8 @@
+const Sequelize = require('sequelize');
 const db = require('./database.js');
 
 // retrieve all clothing_items records for a particular user
-module.exports.getClosetByUser = (username, callback) => {
+module.exports.getClosetByUser = (username, isSelling, callback) => {
   db.User.findOrCreate({ // find the user record linked to input usernam
     where: {
       username,
@@ -10,6 +11,7 @@ module.exports.getClosetByUser = (username, callback) => {
     db.Clothing_Item.findAll({ // retrieve all clothing items for that user
       where: {
         id_user: user[0].dataValues.id_user,
+        selling: isSelling,
       },
     }).then((clothes) => {
       const catImagePromises = clothes.map(clothingItem => db.Category.findOne({ // retrieve the category record based on categoryId
@@ -41,15 +43,39 @@ module.exports.getClosetByUser = (username, callback) => {
 };
 
 // increments the count worn of a clothing_item by 1
-module.exports.updateClothingAsWorn = clothingId => db.Clothing_Item.findOne({
-  where: {
-    id_clothing_item: clothingId,
-  },
-}).then(option => option.increment('count_worn')) // assumes `option` always exists
-  .then(option => option.reload()).then(option => option)
-  .catch((err) => {
-    console.log(err);
-  });
+module.exports.updateClothingAsWorn = (clothingId) => {
+  // console.log(clothingId);
+  return db.Clothing_Item.findOne({
+    where: {
+      id_clothing_item: clothingId,
+    },
+  }).then((option) => {
+    return option.increment('count_worn'); // assumes `option` always exists
+  }).then((option) => {
+    return option.reload();
+  }).then((option) => {
+    return option;
+  })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+module.exports.toggleClothingForSale = (clothingId) => {
+  return db.Clothing_Item.update(
+    { selling: Sequelize.literal('NOT selling') },
+    {
+      where: {
+        id_clothing_item: clothingId,
+      },
+    },
+  ).then((result) => {
+    return result;
+  })
+    .catch((err) => {
+      console.log(err);
+    });
+};
 
 // delete clothing_item given a clothingId
 module.exports.deleteItem = clothingId => db.Clothing_Item.destroy({
