@@ -1,3 +1,4 @@
+const Sequelize = require('sequelize');
 const db = require('./database.js');
 
 module.exports.getClosetByUser = (username, isSelling, callback) => {
@@ -55,6 +56,22 @@ module.exports.updateClothingAsWorn = (clothingId) => {
     return option.reload();
   }).then((option) => {
     return option;
+  })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+module.exports.toggleClothingForSale = (clothingId) => {
+  return db.Clothing_Item.update(
+    { selling: Sequelize.literal('NOT selling') },
+    {
+      where: {
+        id_clothing_item: clothingId,
+      },
+    },
+  ).then((result) => {
+    return result;
   })
     .catch((err) => {
       console.log(err);
