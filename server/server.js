@@ -68,7 +68,19 @@ app.post('/users', (req, res) => {
 app.get('/closet/:username', (req, res) => {
   // console.log(req.params.userId);
   const { username } = req.params;
-  dbhelper.getClosetByUser(username, (error, closet) => {
+  dbhelper.getClosetByUser(username, false, (error, closet) => {
+    if (error) {
+      console.log(error);
+      res.sendStatus(500);
+    }
+    res.send(closet);
+  });
+});
+
+app.get('/closet/:username/selling', (req, res) => {
+  // console.log(req.params.userId);
+  const { username } = req.params;
+  dbhelper.getClosetByUser(username, true, (error, closet) => {
     if (error) {
       console.log(error);
       res.sendStatus(500);
