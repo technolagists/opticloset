@@ -1,6 +1,7 @@
+const Sequelize = require('sequelize');
 const db = require('./database.js');
 
-module.exports.getClosetByUser = (username, callback) => {
+module.exports.getClosetByUser = (username, isSelling, callback) => {
   db.User.findOrCreate({
     where: {
       username,
@@ -9,6 +10,7 @@ module.exports.getClosetByUser = (username, callback) => {
     db.Clothing_Item.findAll({
       where: {
         id_user: user[0].dataValues.id_user,
+        selling: isSelling,
       },
     }).then((clothes) => {
       const catImagePromises = clothes.map((clothingItem) => {
@@ -54,6 +56,22 @@ module.exports.updateClothingAsWorn = (clothingId) => {
     return option.reload();
   }).then((option) => {
     return option;
+  })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+module.exports.toggleClothingForSale = (clothingId) => {
+  return db.Clothing_Item.update(
+    { selling: Sequelize.literal('NOT selling') },
+    {
+      where: {
+        id_clothing_item: clothingId,
+      },
+    },
+  ).then((result) => {
+    return result;
   })
     .catch((err) => {
       console.log(err);

@@ -226,6 +226,7 @@ module.exports.starterClothes = () => {
         color: 'blue',
         price: 15,
         count_worn: 5,
+        selling: true,
       }),
 
       db.Clothing_Item.create({
@@ -311,6 +312,7 @@ module.exports.starterClothes = () => {
         color: 'tan',
         price: 75,
         count_worn: 6,
+        selling: true,
       }),
 
       db.Clothing_Item.create({
@@ -371,6 +373,7 @@ module.exports.starterClothes = () => {
         color: 'pink',
         price: 125,
         count_worn: 6,
+        selling: true,
       }),
 
       db.Clothing_Item.create({

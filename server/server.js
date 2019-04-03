@@ -84,7 +84,19 @@ app.post('/users', (req, res) => {
 app.get('/closet/:username', (req, res) => {
   // console.log(req.params.userId);
   const { username } = req.params;
-  dbhelper.getClosetByUser(username, (error, closet) => {
+  dbhelper.getClosetByUser(username, false, (error, closet) => {
+    if (error) {
+      console.log(error);
+      res.sendStatus(500);
+    }
+    res.send(closet);
+  });
+});
+
+app.get('/closet/:username/sell', (req, res) => {
+  // console.log(req.params.userId);
+  const { username } = req.params;
+  dbhelper.getClosetByUser(username, true, (error, closet) => {
     if (error) {
       console.log(error);
       res.sendStatus(500);
@@ -126,6 +138,19 @@ app.post('/closet/:userId/worn', (req, res) => {
   // const { userId } = req.params;
   const { clothingId } = req.body;
   dbhelper.updateClothingAsWorn(clothingId).then((result) => {
+    // returns to client record with updated worn count
+    res.send(result);
+  }).catch((err) => {
+    console.log(err);
+    res.sendStatus(500);
+  });
+});
+
+// toggle clothing_item in user's closet for pending sale
+app.post('/closet/:userId/sell', (req, res) => {
+  // const { userId } = req.params;
+  const { clothingId } = req.body;
+  dbhelper.toggleClothingForSale(clothingId).then((result) => {
     // returns to client record with updated worn count
     res.send(result);
   }).catch((err) => {
