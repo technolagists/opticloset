@@ -9,6 +9,9 @@ module.exports.getClosetByUser = (username, callback) => {
     db.Clothing_Item.findAll({
       where: {
         id_user: user[0].dataValues.id_user,
+        selling: {
+          $not: true,
+        },
       },
     }).then((clothes) => {
       const catImagePromises = clothes.map((clothingItem) => {
