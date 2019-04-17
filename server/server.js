@@ -147,7 +147,7 @@ app.post('/closet/:userId/worn', (req, res) => {
 });
 
 // toggle clothing_item in user's closet for pending sale
-app.post('/closet/:userId/sell', (req, res) => {
+app.patch('/closet/:userId/sell', (req, res) => {
   // const { userId } = req.params;
   const { clothingId } = req.body;
   dbhelper.toggleClothingForSale(clothingId).then((result) => {
