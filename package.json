@@ -4,7 +4,7 @@
   "description": "opticloset",
   "main": "index.js",
   "scripts": {
-    "test": "jasmine",
+    "test": "jest",
     "test2": "jasmine examples"
   },
   "repository": {

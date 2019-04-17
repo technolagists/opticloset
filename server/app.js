@@ -44,12 +44,11 @@ app.get('/weather', (req, res) => {
 });
 
 
-// Client requesting the weather conditions with a GET request at '/weather' endpoint
+// Client requesting the location/address of the user with a GET request at '/location' endpoint
 app.get('/location', (req, res) => {
-  console.log(req);
+  // console.log(req);
   const { latlng } = req.query;
   geocodingApi.getLocation(latlng).then((location) => {
-    // console.log('sending weather');
     res.status(200).send([location]);
   }).catch((err) => {
     console.log(err);
@@ -71,7 +70,7 @@ app.post('/users', (req, res) => {
     },
   }).then((result) => {
     // send confirmation to client that user was added successfully
-    res.send(`${JSON.stringify(result.dataValues)}`);
+    res.send(`${JSON.stringify(result[0].dataValues)}`);
   }).catch((err) => {
     // log error and send status response to client
     console.error(err);
@@ -126,7 +125,7 @@ app.post('/closet/:userId', (req, res) => {
     .then((result) => {
       res.send(`${JSON.stringify(result[0].dataValues)}`);
     }).catch((err) => {
-    // log error and send status response to client
+      // log error and send status response to client
       console.error(err);
       res.sendStatus(500);
     });
@@ -232,10 +231,10 @@ app.post('/occasions', (req, res) => {
     where: { type },
   })
     .then((result) => {
-    // send confirmation to client that occasion was added or found successfully
+      // send confirmation to client that occasion was added or found successfully
       res.send(`${JSON.stringify(result[0].dataValues)}`);
     }).catch((err) => {
-    // log error and send status response to client
+      // log error and send status response to client
       console.error(err);
       res.sendStatus(500);
     });
@@ -360,6 +359,8 @@ app.get('/default', (req, res) => {
   });
 });
 
-app.listen(PORT, () => {
-  console.log(`listening on port: ${PORT}`);
-});
+// app.listen(PORT, () => {
+//   console.log(`listening on port: ${PORT}`);
+// });
+
+module.exports = app;
