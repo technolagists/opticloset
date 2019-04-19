@@ -1,6 +1,5 @@
-# Project Name
-
-> Pithy project description
+# opticloset-client
+Server portion of the opticloset repo
 
 ## Team
 
@@ -30,6 +29,7 @@ OPEN_WEATHER (https://openweathermap.org/api)
 MALABI (https://www.malabi.co/api-overview/) 
 COLORTAG (https://rapidapi.com/apicloud/api/colortag)
 CLARIFAI (https://clarifai.com/developer/guide/)
+GOOGLE GEOCODING (https://developers.google.com/maps/documentation/geocoding/start)
 
 - Create a .env file with the following variables:
 
@@ -43,6 +43,7 @@ MALABI_API_KEY=
 MALABI_API_ID=
 COLORTAG_API_KEY=
 CLARIFAI_API_KEY=
+GOOGLE_GEOCODING_API_KEY=
 
 - Start the server by running: 
 
