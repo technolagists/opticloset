@@ -1,4 +1,4 @@
-# opticloset-client
+# OptiCloset
 Server portion of the opticloset repo
 
 ## Team
