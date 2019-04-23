@@ -44,6 +44,33 @@ describe('/users endpoint', () => {
     expect(JSON.parse(response.text).username).toBe('test');
   });
 });
+
+describe('/closet/:username endpoint', () => {
+  test('should respond with a 200 Status Code & body containing items for a username with a closet with items not posted on eBay', async () => {
+    const response = await request(server).get('/closet/lauraannpena');
+    expect(response.status).toEqual(200);
+    expect(response.body.length).toBeGreaterThan(0);
+  });
+  test('should respond with a 200 Status Code & body containing an empty array for a username with an empty closet', async () => {
+    const response = await request(server).get('/closet/userWithEmptyCloset');
+    expect(response.status).toEqual(200);
+    expect(response.body.length).toEqual(0);
+  });
+});
+
+describe('/closet/:username/sell endpoint', () => {
+  test('should respond with a 200 Status Code & body containing an empty array for a username with not items on eBay', async () => {
+    const response = await request(server).get('/closet/test/sell');
+    expect(response.status).toEqual(200);
+    expect(response.body.length).toEqual(0);
+  });
+  test('should respond with a 200 Status Code & body containing an empty array for a username with not items on eBay', async () => {
+    const response = await request(server).get('/closet/lauraannpena/sell');
+    expect(response.status).toEqual(200);
+    expect(response.body.length).toEqual(0);
+  });
+});
+
 // describe('login', () => {
 //   test('Users should be able to log in', () => {
 //     return request(server)

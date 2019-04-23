@@ -12,7 +12,7 @@ const colorDetectionApi = require('../apiHelpers/colorTagApi');
 const geocodingApi = require('../apiHelpers/googleMapsApi');
 
 
-const PORT = 8080;
+// const PORT = 8080;
 
 const app = express();
 app.use(bodyParser.json());
